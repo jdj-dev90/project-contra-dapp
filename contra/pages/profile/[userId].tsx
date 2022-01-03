@@ -1,9 +1,25 @@
 import { Box, Button } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import DisplayLinkList from "../../components/common/profile/displayLinkList";
+import ProfileHeader from "../../components/common/profile/header";
 import { UserDetails } from "../../types";
 import { gun } from "../../utils/gun";
 import { AppStateContext } from "../_app";
+
+// const LinkItem: FC<{ title: string }> = ({ title }) => {
+//   return (
+//     <Box
+//       sx={{
+//         display: "flex",
+//         padding: "5px 0",
+//         border: "1px solid orange",
+//       }}
+//     >
+//       {title}
+//     </Box>
+//   );
+// };
 
 export default function Profile() {
   const router = useRouter();
@@ -18,21 +34,21 @@ export default function Profile() {
   }, []);
 
   return (
-    <>
-      PROFILE
-      <Box>{details?.displayName}</Box>
-      <Box>{details?.username}</Box>
-      <Box>{details?.bio}</Box>
-      <Box>{details?.privacyType}</Box>
-      <Button onClick={() => router.push(`/profile/edit/${userId}`)}>
-        Edit
-      </Button>
-      <Button onClick={() => router.push(`/profile/followers/${userId}`)}>
-        Followers
-      </Button>
-      <Button onClick={() => router.push(`/profile/following/${userId}`)}>
-        Following
-      </Button>
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        padding: 10,
+        // border: "1px solid red",
+      }}
+    >
+      <ProfileHeader
+        displayName={details?.displayName || ""}
+        username={details?.username || ""}
+        bio={details?.bio || ""}
+        privacyType={details?.privacyType || ""}
+      />
+      <DisplayLinkList />
+    </Box>
   );
 }
