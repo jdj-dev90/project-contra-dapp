@@ -1,8 +1,7 @@
 import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { Dispatch, FC, SetStateAction, useContext, useEffect } from "react";
-import { AppStateContext } from "../../pages/_app";
-import { gun } from "../../utils/gun";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { useAppState } from "../../utils/gun";
 
 interface PropTypes {
   linkId?: string;
@@ -10,7 +9,7 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
-  const { userId } = useContext(AppStateContext);
+  const { userId, gun } = useAppState();
   const form = useForm({
     initialValues: {
       label: "",
@@ -43,7 +42,7 @@ const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
   }, []);
 
   const onSave = (values: typeof form["values"]) => {
-    const links = gun.get("users").get(`${userId}`).get("links");
+    const links = gun.get(`${userId}`).get("links");
     links.set(values);
     setOpen(false);
   };

@@ -1,12 +1,11 @@
 import { Box, Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Links from "../../../components/links/links";
-import { gun } from "../../../utils/gun";
-import { AppStateContext } from "../../_app";
+import { useAppState } from "../../../utils/gun";
 
 export default function Edit() {
-  const { userId } = useContext(AppStateContext);
+  const { gun, userId } = useAppState();
 
   const form = useForm({
     initialValues: {
@@ -27,21 +26,18 @@ export default function Edit() {
 
   useEffect(() => {
     if (userId) {
-      gun
-        .get("users")
-        .get(`${userId}`)
-        .once((val) => {
-          form.setValues({
-            displayName: val?.displayName || "",
-            bio: val?.bio || "",
-            privacyType: val?.privacyType || "PUBLIC",
-          });
+      gun.get(`${userId}`).once((val) => {
+        form.setValues({
+          displayName: val?.displayName || "",
+          bio: val?.bio || "",
+          privacyType: val?.privacyType || "PUBLIC",
         });
+      });
     }
   }, [userId]);
 
   const onSave = (values: typeof form["values"]) =>
-    gun.get(`${userId}`).get(`userDetails`).put(values);
+    gun.get(`${userId}`).put(values);
 
   return (
     <>

@@ -1,19 +1,17 @@
 import { Box, Card, Text } from "@mantine/core";
-import { FC, useContext, useEffect, useState } from "react";
-import { AppStateContext } from "../../pages/_app";
-import { gun } from "../../utils/gun";
+import { FC, useEffect, useState } from "react";
+import { useAppState } from "../../utils/gun";
 
 interface PropTypes {
   modalOpen: boolean;
 }
 
 const LinksList: FC<PropTypes> = ({ modalOpen }) => {
-  const { userId } = useContext(AppStateContext);
+  const { userId } = useAppState();
 
   const [links, setLinks]: any[] = useState([]);
 
   useEffect(() => {
-    console.log("userIduserId", { userId });
     if (userId && !modalOpen) {
       const arr: any = [];
 
@@ -29,7 +27,6 @@ const LinksList: FC<PropTypes> = ({ modalOpen }) => {
       //   });
     }
   }, [userId, modalOpen]);
-  console.log({ links });
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>

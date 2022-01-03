@@ -1,25 +1,23 @@
 import { Box, Divider } from "@mantine/core";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DisplayLinkList from "../../components/common/profile/displayLinkList";
 import ProfileHeader from "../../components/common/profile/header";
 import { UserDetails } from "../../types";
-import { gun, useMe } from "../../utils/gun";
-import { AppStateContext } from "../_app";
+import { useAppState } from "../../utils/gun";
 
 export default function Profile() {
   const [details, setDetails] = useState<UserDetails>();
-  const { userId } = useContext(AppStateContext);
+
+  const { userId, gun } = useAppState();
 
   useEffect(() => {
-    gun
-      .get("users")
-      .get(`${userId}`)
-      .once((val) => {
-        console.log({ val }, "VAL");
-        setDetails(val as UserDetails);
-      });
+    gun.get(`${userId}`).once((val) => {
+      setDetails(val as UserDetails);
+    });
   }, []);
-  useMe("userDetails");
+  // useMe("userDetails");
+
+  console.log({ details });
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ display: "flex" }}>

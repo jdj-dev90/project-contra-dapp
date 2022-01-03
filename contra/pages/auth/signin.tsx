@@ -1,11 +1,13 @@
-import { Box, Button, Input, TextInput } from "@mantine/core";
+import { Box, Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
-import { user, gun } from "../../utils/gun";
+import { useState } from "react";
+import { useAppState } from "../../utils/gun";
 
 export default function Signin() {
   const router = useRouter();
+  const { user, setUserId, setIsLoggedIn } = useAppState();
+
   const [authError, setAuthError] = useState<string | null>(null);
   const form = useForm({
     initialValues: {
@@ -30,6 +32,8 @@ export default function Signin() {
         console.log("error", { err: ack.err });
         setAuthError(ack.err);
       } else {
+        setUserId(ack.sea.pub);
+        setIsLoggedIn(true);
         router.push(`/profile/${ack.sea.pub}`);
       }
     });

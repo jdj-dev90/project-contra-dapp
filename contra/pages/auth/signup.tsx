@@ -3,7 +3,7 @@ import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { UserDetails } from "../../types";
-import { gun, user } from "../../utils/gun";
+import { useAppState } from "../../utils/gun";
 
 function createUserDetails(
   userId: string,
@@ -21,6 +21,8 @@ function createUserDetails(
 }
 
 export default function Signup() {
+  const { gun, user } = useAppState();
+
   const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);
 
@@ -49,10 +51,10 @@ export default function Signup() {
       if (ack.err) {
         console.log("error", { err: ack.err });
       } else {
-        const userDetails = gun
-          .get("users")
+        const newUser = gun
           .get(ack.pub)
           .put(createUserDetails(ack.pub, values.username, values.displayName));
+        const userDetails = gun.get("users").set(newUser);
         userDetails.once((deet) => console.log({ deet }));
         router.push(`/profile/${ack.pub}`);
       }

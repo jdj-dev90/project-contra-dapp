@@ -8,7 +8,6 @@ interface PropTypes {}
 
 const Links: FC<PropTypes> = () => {
   const [open, setOpen] = useState(false);
-
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
