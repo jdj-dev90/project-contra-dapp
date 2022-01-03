@@ -9,7 +9,7 @@ interface PropTypes {}
 
 const NavMenu: FC<PropTypes> = () => {
   const router = useRouter();
-  const { user, isLoggedIn } = useAppState();
+  const { user, isLoggedIn, reset } = useAppState();
   const [currentPage, setCurrentPage] = useState<Page>("Home");
   return (
     <Box
@@ -63,6 +63,7 @@ const NavMenu: FC<PropTypes> = () => {
           color="red"
           onClick={() => {
             user.leave();
+            reset();
             router.push(`/`);
           }}
         >

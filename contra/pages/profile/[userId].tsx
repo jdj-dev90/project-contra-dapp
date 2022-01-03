@@ -15,9 +15,7 @@ export default function Profile() {
       setDetails(val as UserDetails);
     });
   }, []);
-  // useMe("userDetails");
 
-  console.log({ details });
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ display: "flex" }}>
