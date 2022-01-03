@@ -21,7 +21,7 @@ function createUserDetails(
 }
 
 export default function Signup() {
-  const { gun, user } = useAppState();
+  const { gun, user, setUserId, setIsLoggedIn } = useAppState();
 
   const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);
@@ -55,7 +55,10 @@ export default function Signup() {
           .get(ack.pub)
           .put(createUserDetails(ack.pub, values.username, values.displayName));
         const userDetails = gun.get("users").set(newUser);
-        userDetails.once((deet) => console.log({ deet }));
+
+        setUserId(ack.pub);
+        setIsLoggedIn(true);
+
         router.push(`/profile/${ack.pub}`);
       }
     });
