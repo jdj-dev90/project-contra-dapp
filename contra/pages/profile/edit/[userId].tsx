@@ -27,13 +27,16 @@ export default function Edit() {
 
   useEffect(() => {
     if (userId) {
-      gun.get(`${userId}`).once((val) => {
-        form.setValues({
-          displayName: val?.displayName || "",
-          bio: val?.bio || "",
-          privacyType: val?.privacyType || "PUBLIC",
+      gun
+        .get("users")
+        .get(`${userId}`)
+        .once((val) => {
+          form.setValues({
+            displayName: val?.displayName || "",
+            bio: val?.bio || "",
+            privacyType: val?.privacyType || "PUBLIC",
+          });
         });
-      });
     }
   }, [userId]);
 

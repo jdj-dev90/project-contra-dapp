@@ -1,4 +1,5 @@
 import GUN from "gun";
+import "gun/lib/open.js";
 import "gun/sea";
 import "gun/axe";
 import { IGunChainReference } from "gun/types/chain";
@@ -32,20 +33,35 @@ interface ss {
   followers: BaseUserDetails[];
   following: BaseUserDetails[];
 }
-export const useMe = (userId: string, ...args: (keyof ss)[]) => {
+export const useMe = (...args: (keyof ss)[]) => {
+  const userId = user?.is?.pub;
+  const me = gun
+    .get("users")
+    .get(`${userId}`)
+    .once((val1) => {
+      console.log({ val1, userId });
+    });
+  console.log({ user });
+
   useEffect(() => {
-    if (args.includes("userDetails")) {
-      gun.get(`${userId}`).once((val) => {
-        console.log({ val });
-        sss.userDetails = val;
-      });
-      // user.get("userDetails").once((val) => {
-      //   console.log({ val });
-      //   sss.userDetails = val;
-      // });
+    if (userId) {
+      // console.log({ me });
+      if (args.includes("userDetails")) {
+        gun
+          .get("users")
+          .get(`${userId}`)
+          .once((val) => {
+            console.log({ val });
+            sss.userDetails = val;
+          });
+        // user.get("userDetails").once((val) => {
+        //   console.log({ val });
+        //   sss.userDetails = val;
+        // });
+      }
     }
     return () => {};
-  }, []);
+  }, [userId]);
   const sss: any = {
     userDetails: "yo",
   };

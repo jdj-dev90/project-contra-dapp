@@ -27,11 +27,15 @@ export default function Profile() {
   const { userId } = useContext(AppStateContext);
 
   useEffect(() => {
-    gun.get(`${userId}`).once((val) => setDetails(val as UserDetails));
+    gun
+      .get("users")
+      .get(`${userId}`)
+      .once((val) => {
+        console.log({ val }, "VAL");
+        setDetails(val as UserDetails);
+      });
   }, []);
-
-  // useMe(userId as string, "userDetails");
-  console.log("details", { details, userId });
+  useMe("userDetails");
   return (
     <Box
       sx={{

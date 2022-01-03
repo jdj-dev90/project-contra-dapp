@@ -43,7 +43,7 @@ const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
   }, []);
 
   const onSave = (values: typeof form["values"]) => {
-    const links = gun.get(`${userId}`).get("links");
+    const links = gun.get("users").get(`${userId}`).get("links");
     links.set(values);
     setOpen(false);
   };
