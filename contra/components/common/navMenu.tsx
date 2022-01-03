@@ -1,15 +1,13 @@
 import { Box, Divider, Menu, Text } from "@mantine/core";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
-import { user } from "../../utils/gun";
+import { FC, useContext, useState } from "react";
+import { AppStateContext } from "../../pages/_app";
 type Page = "Home" | "Profile";
 interface PropTypes {}
 
 const NavMenu: FC<PropTypes> = () => {
   const router = useRouter();
-  const { userId } = router.query;
-  const id = userId;
-  // || user.is.pub;
+  const { user, isLoggedIn } = useContext(AppStateContext);
   const [currentPage, setCurrentPage] = useState<Page>("Home");
   return (
     <Box sx={{ display: "flex", justifyContent: "flex-end", padding: 10 }}>
@@ -19,6 +17,7 @@ const NavMenu: FC<PropTypes> = () => {
       <Menu>
         <Menu.Label>Navigation</Menu.Label>
         <Menu.Item
+          disabled={!isLoggedIn}
           onClick={() => {
             setCurrentPage("Home");
             router.push("/");
@@ -27,9 +26,10 @@ const NavMenu: FC<PropTypes> = () => {
           Home
         </Menu.Item>
         <Menu.Item
+          disabled={!isLoggedIn}
           onClick={() => {
             setCurrentPage("Profile");
-            router.push(`/profile/${id}`);
+            router.push(`/profile/${user.is.pub}`);
           }}
         >
           Profile
@@ -38,19 +38,19 @@ const NavMenu: FC<PropTypes> = () => {
         <Menu.Label>Account</Menu.Label>
 
         <Menu.Item
-          disabled={!!user.is}
+          disabled={isLoggedIn}
           onClick={() => router.push(`/auth/signin`)}
         >
           Sign In
         </Menu.Item>
         <Menu.Item
-          disabled={!!user.is}
+          disabled={isLoggedIn}
           onClick={() => router.push(`/auth/signup`)}
         >
           Sign Up
         </Menu.Item>
         <Menu.Item
-          disabled={!user.is}
+          disabled={!isLoggedIn}
           color="red"
           onClick={() => {
             user.leave();
