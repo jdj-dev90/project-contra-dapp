@@ -4,8 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import DisplayLinkList from "../../components/common/profile/displayLinkList";
 import ProfileHeader from "../../components/common/profile/header";
 import { UserDetails } from "../../types";
-import { gun } from "../../utils/gun";
 import { AppStateContext } from "../_app";
+import { gun, useMe } from "../../utils/gun";
 
 // const LinkItem: FC<{ title: string }> = ({ title }) => {
 //   return (
@@ -27,12 +27,10 @@ export default function Profile() {
   const { userId } = useContext(AppStateContext);
 
   useEffect(() => {
-    gun
-      .get(`${userId}`)
-      .get(`userDetails`)
-      .once((val) => setDetails(val as UserDetails));
+    gun.get(`${userId}`).once((val) => setDetails(val as UserDetails));
   }, []);
 
+  useMe(userId as string, "userDetails");
   return (
     <Box
       sx={{

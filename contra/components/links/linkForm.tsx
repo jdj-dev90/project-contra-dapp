@@ -32,7 +32,6 @@ const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
     if (linkId) {
       // gun
       //   .get(`${userId}`)
-      //   .get(`userDetails`)
       // .once((val) => {
       //   form.setValues({
       //     displayName: val?.displayName || "",

@@ -14,11 +14,13 @@ export interface User {
 export type Gun = IGunChainReference<any, any, "pre_root">;
 
 export type GunUser = IGunChainReference;
-
-export interface UserDetails {
+export interface BaseUserDetails {
+  userId: string;
   avatar: string;
-  bio: string;
   displayName: string;
+}
+export interface UserDetails extends BaseUserDetails {
+  bio: string;
   username: string;
   privacyType: string;
 }

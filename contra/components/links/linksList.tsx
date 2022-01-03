@@ -16,16 +16,17 @@ const LinksList: FC<PropTypes> = ({ modalOpen }) => {
     console.log("userIduserId", { userId });
     if (userId && !modalOpen) {
       const arr: any = [];
-      gun
-        .get(`${userId}`)
-        .get("links")
-        .map()
-        .once((link: any, id) => {
-          console.log({ link, id });
-          arr.push({ label: link.label, type: link.type, url: link.url, id });
-          console.log("arr", { arr });
-          setLinks(arr);
-        });
+
+      // gun
+      //   .get(`${userId}`)
+      //   .get("links")
+      //   .map()
+      //   .once((link: any, id) => {
+      //     console.log({ link, id });
+      //     arr.push({ label: link.label, type: link.type, url: link.url, id });
+      //     console.log("arr", { arr });
+      //     setLinks(arr);
+      //   });
     }
   }, [userId, modalOpen]);
   console.log({ links });
