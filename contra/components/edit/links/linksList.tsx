@@ -1,6 +1,6 @@
 import { Box, Card, Text } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
-import { useAppState } from "../../utils/gun";
+import { useAppState } from "../../../utils/gun";
 
 interface PropTypes {
   modalOpen: boolean;

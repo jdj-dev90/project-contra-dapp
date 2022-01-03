@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { BiLockAlt, BiLockOpen, BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons/lib";
 import { FC } from "react";
-import { useAppState } from "../../../utils/gun";
+import { useAppState } from "../../utils/gun";
 
 interface ProfileHeaderProps {
   displayName: string;

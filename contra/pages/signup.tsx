@@ -2,8 +2,8 @@ import { Box, Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UserDetails } from "../../types";
-import { useAppState } from "../../utils/gun";
+import { UserDetails } from "../types";
+import { useAppState } from "../utils/gun";
 
 function createUserDetails(
   userId: string,

@@ -1,7 +1,7 @@
 import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Dispatch, FC, SetStateAction, useEffect } from "react";
-import { useAppState } from "../../utils/gun";
+import { useAppState } from "../../../utils/gun";
 
 interface PropTypes {
   linkId?: string;

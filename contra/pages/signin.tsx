@@ -2,7 +2,7 @@ import { Box, Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAppState } from "../../utils/gun";
+import { useAppState } from "../utils/gun";
 
 export default function Signin() {
   const router = useRouter();
