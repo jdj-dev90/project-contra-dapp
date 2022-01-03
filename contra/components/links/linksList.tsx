@@ -20,9 +20,9 @@ const LinksList: FC<PropTypes> = ({ modalOpen }) => {
         .get("links")
         .map()
         .once((link: any, id) => {
-          console.log({ link, id });
+          // console.log({ link, id });
           arr.push({ label: link.label, type: link.type, url: link.url, id });
-          console.log("arr", { arr });
+          // console.log("arr", { arr });
           // setLinks(arr);
         });
     }

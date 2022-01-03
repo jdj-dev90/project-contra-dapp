@@ -71,7 +71,6 @@ export const AppContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const setUserId = (userId: string) => {
-    console.log({ userId }, "HEREREER");
     dispatch({ type: "SET_USER_ID", payload: userId });
   };
   const setIsLoggedIn = (isLoggedIn: boolean) => {
@@ -93,7 +92,7 @@ export const AppContextProvider: FC<{ children: ReactNode }> = ({
 
   const [state, dispatch] = useReducer(reducer, initState);
   // const [state, setState] = useState(initState);
-  console.log({ state });
+  // console.log({ state });
   return (
     <AppStateContext.Provider value={state}>
       {children}
