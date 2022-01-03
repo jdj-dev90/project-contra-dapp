@@ -14,3 +14,17 @@ export interface User {
 export type Gun = IGunChainReference<any, any, "pre_root">;
 
 export type GunUser = IGunChainReference;
+
+export interface UserDetails {
+  avatar: string;
+  bio: string;
+  displayName: string;
+  username: string;
+  privacyType: string;
+}
+
+export interface UserLink {
+  type: string;
+  title: string;
+  url: string;
+}

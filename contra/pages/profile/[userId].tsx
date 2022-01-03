@@ -1,20 +1,34 @@
 import { Box, Button } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserDetails } from "../../types";
+import { gun } from "../../utils/gun";
 
 export default function Profile() {
   const router = useRouter();
+  const [details, setDetails] = useState<UserDetails>();
   const { userId } = router.query;
-  console.log("profile userId", { userId });
-
+  useEffect(() => {
+    gun
+      .get(`${userId}`)
+      .get(`userDetails`)
+      .once((val) => setDetails(val as UserDetails));
+  }, []);
   return (
     <>
-      <Box>Name</Box>
-      <Box></Box>
-      <Box></Box>
-
+      PROFILE
+      <Box>{details?.displayName}</Box>
+      <Box>{details?.username}</Box>
+      <Box>{details?.bio}</Box>
+      <Box>{details?.privacyType}</Box>
       <Button onClick={() => router.push(`/profile/edit/${userId}`)}>
         Edit
+      </Button>
+      <Button onClick={() => router.push(`/profile/followers/${userId}`)}>
+        Followers
+      </Button>
+      <Button onClick={() => router.push(`/profile/following/${userId}`)}>
+        Following
       </Button>
     </>
   );
