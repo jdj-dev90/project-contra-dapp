@@ -30,7 +30,8 @@ export default function Profile() {
     gun.get(`${userId}`).once((val) => setDetails(val as UserDetails));
   }, []);
 
-  useMe(userId as string, "userDetails");
+  // useMe(userId as string, "userDetails");
+  console.log("details", { details, userId });
   return (
     <Box
       sx={{
