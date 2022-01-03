@@ -1,4 +1,4 @@
-import { Button, Checkbox, TextInput } from "@mantine/core";
+import { Box, Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useContext, useEffect } from "react";
 import Links from "../../../components/links/links";
@@ -45,25 +45,40 @@ export default function Edit() {
 
   return (
     <>
-      <form onSubmit={form.onSubmit(onSave)}>
-        <TextInput
-          placeholder="Display Name"
-          {...form.getInputProps("displayName")}
-        />
-        <TextInput placeholder="Bio" {...form.getInputProps("bio")} />
-        <Checkbox
-          {...form.getInputProps("privacyType", { type: "checkbox" })}
-          checked={form.values.privacyType === "PRIVATE"}
-          onChange={(e: any) => {
-            form.setFieldValue(
-              "privacyType",
-              e.currentTarget.checked ? "PRIVATE" : "PUBLIC"
-            );
-          }}
-          label="Do you want to make your account private?"
-        />
-        <Button type="submit">save</Button>
-      </form>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ width: "80%" }}>
+          <Title order={2}>Account Details</Title>
+          <form onSubmit={form.onSubmit(onSave)}>
+            <TextInput
+              sx={{ padding: "5px 0" }}
+              label="Display Name"
+              placeholder="John Doe"
+              {...form.getInputProps("displayName")}
+            />
+            <TextInput
+              sx={{ padding: "5px 0" }}
+              label="Bio"
+              placeholder="..."
+              {...form.getInputProps("bio")}
+            />
+            <Checkbox
+              sx={{ padding: "10px 0" }}
+              {...form.getInputProps("privacyType", { type: "checkbox" })}
+              checked={form.values.privacyType === "PRIVATE"}
+              onChange={(e: any) => {
+                form.setFieldValue(
+                  "privacyType",
+                  e.currentTarget.checked ? "PRIVATE" : "PUBLIC"
+                );
+              }}
+              label="Do you want to make your account private?"
+            />
+            <Button sx={{ margin: "5px 0" }} type="submit">
+              save
+            </Button>
+          </form>
+        </Box>
+      </Box>
       <Links />
     </>
   );
