@@ -1,8 +1,7 @@
-import { Box, Button, Select, TextInput } from "@mantine/core";
+import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { genUuid } from "../../utils/genUuid";
+import { Dispatch, FC, SetStateAction, useContext, useEffect } from "react";
+import { AppStateContext } from "../../pages/_app";
 import { gun } from "../../utils/gun";
 
 interface PropTypes {
@@ -11,8 +10,7 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
-  const router = useRouter();
-  const { userId } = router.query;
+  const { userId } = useContext(AppStateContext);
   const form = useForm({
     initialValues: {
       label: "",

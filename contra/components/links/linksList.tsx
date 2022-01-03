@@ -1,16 +1,14 @@
 import { Box, Card, Text } from "@mantine/core";
-import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
+import { AppStateContext } from "../../pages/_app";
 import { gun } from "../../utils/gun";
-import useAsyncEffect from "use-async-effect";
 
 interface PropTypes {
   modalOpen: boolean;
 }
 
 const LinksList: FC<PropTypes> = ({ modalOpen }) => {
-  const router = useRouter();
-  const { userId } = router.query;
+  const { userId } = useContext(AppStateContext);
 
   const [links, setLinks]: any[] = useState([]);
 

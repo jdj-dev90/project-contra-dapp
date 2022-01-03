@@ -1,12 +1,12 @@
 import { Button, Checkbox, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Links from "../../../components/links/links";
 import { gun } from "../../../utils/gun";
+import { AppStateContext } from "../../_app";
 
 export default function Edit() {
-  const router = useRouter();
+  const { userId } = useContext(AppStateContext);
 
   const form = useForm({
     initialValues: {
@@ -25,7 +25,6 @@ export default function Edit() {
     },
   });
 
-  const { userId } = router.query;
   useEffect(() => {
     if (userId) {
       gun
@@ -41,10 +40,8 @@ export default function Edit() {
     }
   }, [userId]);
 
-  const onSave = (values: typeof form["values"]) => {
+  const onSave = (values: typeof form["values"]) =>
     gun.get(`${userId}`).get(`userDetails`).put(values);
-    // router.back();
-  };
 
   return (
     <>

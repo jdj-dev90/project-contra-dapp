@@ -3,17 +3,20 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { UserDetails } from "../../types";
 import { gun } from "../../utils/gun";
+import { AppStateContext } from "../_app";
 
 export default function Profile() {
   const router = useRouter();
   const [details, setDetails] = useState<UserDetails>();
-  const { userId } = router.query;
+  const { userId } = useContext(AppStateContext);
+
   useEffect(() => {
     gun
       .get(`${userId}`)
       .get(`userDetails`)
       .once((val) => setDetails(val as UserDetails));
   }, []);
+
   return (
     <>
       PROFILE

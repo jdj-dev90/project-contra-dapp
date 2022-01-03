@@ -9,6 +9,7 @@ export const AppStateContext = createContext({
   gun,
   user,
   isLoggedIn: !!user.is,
+  userId: user?.is?.pub || null,
 });
 
 export default function App(props: AppProps) {
@@ -24,7 +25,14 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-      <AppStateContext.Provider value={{ gun, user, isLoggedIn: !!user.is }}>
+      <AppStateContext.Provider
+        value={{
+          gun,
+          user,
+          isLoggedIn: !!user.is,
+          userId: user?.is?.pub || null,
+        }}
+      >
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
