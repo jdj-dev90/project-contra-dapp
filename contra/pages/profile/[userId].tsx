@@ -1,4 +1,4 @@
-import { Box, Button } from "@mantine/core";
+import { Box, Button, Divider } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import DisplayLinkList from "../../components/common/profile/displayLinkList";
@@ -50,6 +50,11 @@ export default function Profile() {
         username={details?.username || ""}
         bio={details?.bio || ""}
         privacyType={details?.privacyType || ""}
+      />
+      <Divider
+        sx={{
+          margin: "15px 10px",
+        }}
       />
       <DisplayLinkList />
     </Box>
