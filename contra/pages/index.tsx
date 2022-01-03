@@ -6,7 +6,7 @@ import { AppStateContext } from "./_app";
 const Home: NextPage = () => {
   const { gun, user, isLoggedIn } = useContext(AppStateContext);
   console.log({ gun, user, isLoggedIn }, "asdadsad");
-  return <Box></Box>;
+  return <Box>Landing Page</Box>;
 };
 
 export default Home;

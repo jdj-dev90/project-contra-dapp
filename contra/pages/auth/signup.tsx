@@ -1,12 +1,17 @@
-import { Box, Button, Input, TextInput } from "@mantine/core";
+import { Box, Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UserDetails, UserLink } from "../../types";
+import { UserDetails } from "../../types";
 import { gun, user } from "../../utils/gun";
 
-function createUserDetails(username: string, displayName: string): UserDetails {
+function createUserDetails(
+  userId: string,
+  username: string,
+  displayName: string
+): UserDetails {
   return {
+    userId,
     avatar: "",
     bio: "",
     displayName: displayName,
@@ -45,9 +50,9 @@ export default function Signup() {
         console.log("error", { err: ack.err });
       } else {
         const userDetails = gun
+          .get("users")
           .get(ack.pub)
-          .get(`userDetails`)
-          .put(createUserDetails(values.username, values.displayName));
+          .put(createUserDetails(ack.pub, values.username, values.displayName));
         userDetails.once((deet) => console.log({ deet }));
         router.push(`/profile/${ack.pub}`);
       }
