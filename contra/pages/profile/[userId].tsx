@@ -9,9 +9,15 @@ export default function Profile() {
   const [details, setDetails] = useState<UserDetails>();
   const { userId } = router.query;
   useEffect(() => {
-    gun.get(`${userId}`).once((val) => setDetails(val as UserDetails));
+    gun
+      .get("users")
+      .get(`${userId}`)
+      .once((val) => {
+        console.log({ val }, "VAL");
+        setDetails(val as UserDetails);
+      });
   }, []);
-  useMe(userId as string, "userDetails");
+  useMe("userDetails");
   return (
     <>
       PROFILE

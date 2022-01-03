@@ -28,18 +28,21 @@ export default function Edit() {
   const { userId } = router.query;
   useEffect(() => {
     if (userId) {
-      gun.get(`${userId}`).once((val) => {
-        form.setValues({
-          displayName: val?.displayName || "",
-          bio: val?.bio || "",
-          privacyType: val?.privacyType || "PUBLIC",
+      gun
+        .get("users")
+        .get(`${userId}`)
+        .once((val) => {
+          form.setValues({
+            displayName: val?.displayName || "",
+            bio: val?.bio || "",
+            privacyType: val?.privacyType || "PUBLIC",
+          });
         });
-      });
     }
   }, [userId]);
 
   const onSave = (values: typeof form["values"]) => {
-    gun.get(`${userId}`).put(values);
+    gun.get("users").get(`${userId}`).put(values);
     // router.back();
   };
 
