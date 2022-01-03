@@ -1,13 +1,11 @@
-import { Box, Button, Divider } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { useRouter } from "next/router";
-import { FC, useContext } from "react";
-import { AppStateContext } from "../../../pages/_app";
+import { FC } from "react";
 
 interface DisplayLinkListProps {}
 
 const DisplayLinkList: FC<DisplayLinkListProps> = () => {
   const router = useRouter();
-  const { userId } = useContext(AppStateContext);
 
   return (
     <Box

@@ -1,16 +1,8 @@
 import { MantineProvider } from "@mantine/core";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { createContext } from "react";
 import Layout from "../components/common/layout";
-import { gun, user } from "../utils/gun";
-
-export const AppStateContext = createContext({
-  gun,
-  user,
-  isLoggedIn: !!user.is,
-  userId: user?.is?.pub || null,
-});
+import { AppContextProvider } from "../utils/gun";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -25,14 +17,7 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-      <AppStateContext.Provider
-        value={{
-          gun,
-          user,
-          isLoggedIn: !!user.is,
-          userId: user?.is?.pub || null,
-        }}
-      >
+      <AppContextProvider>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
@@ -45,7 +30,7 @@ export default function App(props: AppProps) {
             <Component {...pageProps} />
           </Layout>
         </MantineProvider>
-      </AppStateContext.Provider>
+      </AppContextProvider>
     </>
   );
 }
