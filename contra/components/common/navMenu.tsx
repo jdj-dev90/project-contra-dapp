@@ -46,16 +46,10 @@ const NavMenu: FC<PropTypes> = () => {
         <Divider />
         <Menu.Label>Account</Menu.Label>
 
-        <Menu.Item
-          disabled={isLoggedIn}
-          onClick={() => router.push(`/auth/signin`)}
-        >
+        <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signin`)}>
           Sign In
         </Menu.Item>
-        <Menu.Item
-          disabled={isLoggedIn}
-          onClick={() => router.push(`/auth/signup`)}
-        >
+        <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signup`)}>
           Sign Up
         </Menu.Item>
         <Menu.Item

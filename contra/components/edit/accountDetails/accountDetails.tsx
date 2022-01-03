@@ -1,11 +1,10 @@
-import { Box, Button, Checkbox, TextInput, Title } from "@mantine/core";
+import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
-import Links from "../../../components/links/links";
-import { gun, useAppState } from "../../../utils/gun";
+import { useAppState } from "../../../utils/gun";
 
-export default function Edit() {
-  const { userId } = useAppState();
+export default function AccountDetails() {
+  const { gun, userId } = useAppState();
 
   const form = useForm({
     initialValues: {
@@ -40,8 +39,8 @@ export default function Edit() {
     gun.get(`${userId}`).put(values);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      {/* <Title order={2}>Account Details</Title>
+    <>
+      <Title order={2}>Account Details</Title>
       <form onSubmit={form.onSubmit(onSave)}>
         <TextInput
           sx={{ padding: "5px 0" }}
@@ -70,9 +69,7 @@ export default function Edit() {
         <Button sx={{ margin: "5px 0" }} type="submit">
           save
         </Button>
-      </form> */}
-      <AccountDetails />
-      <Links />
-    </Box>
+      </form>
+    </>
   );
 }

@@ -1,48 +1,33 @@
 import { Box, Card, Text } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
-import { gun, useAppState } from "../../utils/gun";
+import { useAppState } from "../../../utils/gun";
 
 interface PropTypes {
   modalOpen: boolean;
 }
 
-function aaa() {
-  let arr: any = [];
-
-  useEffect(() => {}, []);
-
-  return (item: any) => {
-    arr.push(item);
-  };
-}
-
 const LinksList: FC<PropTypes> = ({ modalOpen }) => {
-  const { userId } = useAppState();
-  console.log({ userId, gun });
+  const { userId, gun } = useAppState();
+
   const [links, setLinks]: any[] = useState([]);
 
   useEffect(() => {
     if (userId && !modalOpen) {
       const arr: any = [];
-      const links = gun.get(`${userId}`).get("links");
-      const linkKeys = Object.keys((links as any)._.put);
-      const lastLink = linkKeys[linkKeys.length - 1];
-      console.log({
-        links,
-        linkKeys,
-        lastLink,
-      });
-      links.map().once((link: any, id: string) => {
-        console.log({ link, id });
-        arr.push({ label: link.label, type: link.type, url: link.url, id });
-        console.log("arr", { arr });
-        if (id === lastLink) {
-          setLinks(arr);
-        }
-      });
+
+      gun
+        .get(`${userId}`)
+        .get("links")
+        .map()
+        .once((link: any, id) => {
+          // console.log({ link, id });
+          arr.push({ label: link.label, type: link.type, url: link.url, id });
+          // console.log("arr", { arr });
+          // setLinks(arr);
+        });
     }
   }, [userId, modalOpen]);
-  console.log({ links }, "LINKS");
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ width: "60%" }}>
