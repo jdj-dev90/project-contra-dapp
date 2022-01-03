@@ -12,7 +12,14 @@ const NavMenu: FC<PropTypes> = () => {
   const { user, isLoggedIn } = useContext(AppStateContext);
   const [currentPage, setCurrentPage] = useState<Page>("Home");
   return (
-    <Box sx={{ display: "flex", justifyContent: "flex-end", padding: 10 }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        padding: 10,
+        border: "1px solid red",
+      }}
+    >
       <Box sx={{ marginRight: 10 }}>
         <Text>{currentPage}</Text>
       </Box>
