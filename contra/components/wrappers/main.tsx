@@ -10,7 +10,7 @@ interface MainProps {
 const Main: FC<MainProps> = ({ children }) => {
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Box sx={{ display: "flex" }}>{children}</Box>
+      <Box sx={{ width: "80%" }}>{children}</Box>
     </Box>
   );
 };

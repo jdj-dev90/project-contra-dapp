@@ -1,7 +1,9 @@
-import { Box, Button, TextInput } from "@mantine/core";
+import { Box, Button, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Column from "../components/wrappers/column";
+import InputWrapper from "../components/wrappers/inputWrapper";
 import { UserDetails } from "../types";
 import { useAppState } from "../utils/gun";
 
@@ -64,36 +66,46 @@ export default function Signup() {
     });
   };
   return (
-    <>
+    <Column sx={{ marginTop: "30px" }}>
+      <Title order={3}>Sign Up</Title>
       <form onSubmit={form.onSubmit(signUpUser)}>
-        <TextInput
-          placeholder="Username"
-          {...form.getInputProps("username")}
-          onChange={(event) => {
-            form.setFieldValue("username", event.currentTarget.value);
-            setAuthError(null);
-          }}
-        />
-        <TextInput
-          placeholder="Display Name"
-          {...form.getInputProps("displayName")}
-          onChange={(event) => {
-            form.setFieldValue("displayName", event.currentTarget.value);
-            setAuthError(null);
-          }}
-        />
-        <TextInput
-          placeholder="Password"
-          {...form.getInputProps("password")}
-          onChange={(event) => {
-            form.setFieldValue("password", event.currentTarget.value);
-            setAuthError(null);
-          }}
-          type="password"
-        />
+        <InputWrapper>
+          <TextInput
+            {...form.getInputProps("username")}
+            label="Username"
+            placeholder="example"
+            onChange={(event) => {
+              form.setFieldValue("username", event.currentTarget.value);
+              setAuthError(null);
+            }}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <TextInput
+            {...form.getInputProps("displayName")}
+            label="Display Name"
+            placeholder="John Doe"
+            onChange={(event) => {
+              form.setFieldValue("displayName", event.currentTarget.value);
+              setAuthError(null);
+            }}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <TextInput
+            {...form.getInputProps("password")}
+            type="password"
+            label="Password"
+            placeholder="********"
+            onChange={(event) => {
+              form.setFieldValue("password", event.currentTarget.value);
+              setAuthError(null);
+            }}
+          />
+        </InputWrapper>
         <Button type="submit">Sign Up</Button>
       </form>
       {authError && <Box>{authError}</Box>}
-    </>
+    </Column>
   );
 }
