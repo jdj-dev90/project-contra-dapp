@@ -3,7 +3,7 @@ import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { UserDetails } from "../../types";
-import { useAppState } from "../../utils/gun";
+import { gun, useAppState, user } from "../../utils/gun";
 
 function createUserDetails(
   userId: string,
@@ -21,7 +21,7 @@ function createUserDetails(
 }
 
 export default function Signup() {
-  const { gun, user, setUserId, setIsLoggedIn } = useAppState();
+  const { setUserId, setIsLoggedIn } = useAppState();
 
   const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);

@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import DisplayLinkList from "../../components/common/profile/displayLinkList";
 import ProfileHeader from "../../components/common/profile/header";
 import { UserDetails } from "../../types";
-import { useAppState } from "../../utils/gun";
+import { gun, useAppState } from "../../utils/gun";
 
 export default function Profile() {
   const [details, setDetails] = useState<UserDetails>();
 
-  const { userId, gun } = useAppState();
+  const { userId } = useAppState();
 
   useEffect(() => {
     gun.get(`${userId}`).once((val) => {

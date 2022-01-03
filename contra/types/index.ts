@@ -4,13 +4,6 @@ export interface UserTheme {
   primaryColor: string;
 }
 
-export interface User {
-  displayName: string;
-  bio: string;
-  links: string[];
-  theme: UserTheme;
-}
-
 export type Gun = IGunChainReference<any, any, "pre_root">;
 
 export type GunUser = IGunChainReference;
@@ -29,4 +22,15 @@ export interface UserLink {
   type: string;
   title: string;
   url: string;
+}
+
+export type User = Gun & {
+  is: { alias: string; epub: string; pub: string };
+};
+export interface AppContext {
+  userId: string;
+  setUserId: (userId: string) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  reset: () => void;
 }
