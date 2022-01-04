@@ -1,12 +1,15 @@
 import { Box, Button, Card, Text } from "@mantine/core";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { useLinks } from "../../../hooks";
+import { UserLink } from "../../../types";
 
 interface PropTypes {
   modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  setLink: Dispatch<SetStateAction<UserLink | null>>;
 }
 
-const LinksList: FC<PropTypes> = ({ modalOpen }) => {
+const LinksList: FC<PropTypes> = ({ modalOpen, setModalOpen, setLink }) => {
   const { links, deleteLink } = useLinks();
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -37,6 +40,14 @@ const LinksList: FC<PropTypes> = ({ modalOpen }) => {
                 <Box></Box>
               </Box>
               <Button onClick={() => deleteLink(l.id)}>Delete</Button>
+              <Button
+                onClick={() => {
+                  setLink(l);
+                  setModalOpen(true);
+                }}
+              >
+                Edit
+              </Button>
             </Card>
             // <Box
             //   key={`${l.id}-${ix}`}

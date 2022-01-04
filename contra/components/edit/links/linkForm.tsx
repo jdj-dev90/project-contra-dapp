@@ -2,20 +2,22 @@ import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Dispatch, FC, SetStateAction, useEffect } from "react";
 import { useGun, useUser } from "../../../hooks";
+import { UserLink } from "../../../types";
 
 interface PropTypes {
-  linkId?: string;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  link: UserLink | null;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
+const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
   const { gun } = useGun();
   const { userId } = useUser();
   const form = useForm({
     initialValues: {
-      label: "",
-      url: "",
-      type: null,
+      label: link?.label || "",
+      url: link?.url || "",
+      type: link?.type || null,
+      id: link?.id || null,
     },
 
     validationRules: {
@@ -28,24 +30,14 @@ const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
     },
   });
 
-  useEffect(() => {
-    if (linkId) {
-      // gun
-      //   .get(`${userId}`)
-      // .once((val) => {
-      //   form.setValues({
-      //     displayName: val?.displayName || "",
-      //     bio: val?.bio || "",
-      //     privacyType: val?.privacyType || "PUBLIC",
-      //   });
-      // });
-    }
-  }, []);
-
-  const onSave = (values: typeof form["values"]) => {
+  const onSave = ({ id, ...values }: typeof form["values"]) => {
     const links = gun.get(`${userId}`).get("links");
-    links.set(values);
-    setOpen(false);
+    if (id) {
+      gun.get(id).put(values);
+    } else {
+      links.set(values);
+    }
+    setModalOpen(false);
   };
 
   return (
