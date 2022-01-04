@@ -2,12 +2,14 @@ import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
 import { useGun, useUser } from "../../../hooks";
+import SeededAvatar from "../../common/cards/seededAvatar";
 
 export default function AccountDetails() {
   const { gun } = useGun();
   const { userId } = useUser();
   const form = useForm({
     initialValues: {
+      username: null,
       displayName: "",
       bio: "",
       privacyType: "PUBLIC",
@@ -27,6 +29,7 @@ export default function AccountDetails() {
     if (userId) {
       gun.get(`${userId}`).once((val) => {
         form.setValues({
+          username: val?.username || null,
           displayName: val?.displayName || "",
           bio: val?.bio || "",
           privacyType: val?.privacyType || "PUBLIC",
@@ -41,7 +44,12 @@ export default function AccountDetails() {
   return (
     <>
       <Title order={2}>Account Details</Title>
+
       <form onSubmit={form.onSubmit(onSave)}>
+        <SeededAvatar
+          seed={form.values.username}
+          onEdit={() => console.log("avatar edit clicked")}
+        />
         <TextInput
           sx={{ padding: "5px 0" }}
           label="Display Name"

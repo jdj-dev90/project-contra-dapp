@@ -25,7 +25,7 @@ const Links: FC<PropTypes> = () => {
       <ModalWrapper open={open} setOpen={setOpen}>
         <LinkForm link={link} setModalOpen={setOpen} />
       </ModalWrapper>
-      <LinksList modalOpen={open} setModalOpen={setOpen} setLink={setLink} />
+      <LinksList setModalOpen={setOpen} setLink={setLink} />
     </Box>
   );
 };

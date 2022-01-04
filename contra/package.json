@@ -8,6 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/miniavs": "^4.10.2",
     "@mantine/core": "^3.4.3",
     "@mantine/hooks": "^3.4.3",
     "@mantine/next": "^3.4.3",
@@ -16,6 +18,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
+    "react-spring": "^9.4.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

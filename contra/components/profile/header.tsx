@@ -4,6 +4,7 @@ import { FC } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
 import { IconContext } from "react-icons/lib";
 import { useUser } from "../../hooks";
+import SeededAvatar from "../common/cards/seededAvatar";
 
 interface ProfileHeaderProps {
   displayName: string;
@@ -46,6 +47,10 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
         }}
       >
         <HeaderItem>
+          <HeaderItem>
+            <SeededAvatar seed={username} />
+          </HeaderItem>
+
           <Title order={2}>{displayName}</Title>
           <Box
             sx={{

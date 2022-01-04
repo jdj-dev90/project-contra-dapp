@@ -1,6 +1,6 @@
 import { Box, Divider } from "@mantine/core";
 import { useEffect, useState } from "react";
-import DisplayLinkList from "../../components/profile/displayLinkList";
+import LinksList from "../../components/edit/links/linksList";
 import ProfileHeader from "../../components/profile/header";
 import { useGun, useUser } from "../../hooks";
 import { UserDetails } from "../../types";
@@ -35,7 +35,7 @@ export default function Profile() {
           margin: "15px 10px",
         }}
       />
-      <DisplayLinkList />
+      <LinksList />
     </Box>
   );
 }
