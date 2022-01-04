@@ -1,11 +1,11 @@
 import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
-import { useAppState } from "../../../utils/gun";
+import { useGun, useUser } from "../../../hooks";
 
 export default function AccountDetails() {
-  const { gun, userId } = useAppState();
-
+  const { gun } = useGun();
+  const { userId } = useUser();
   const form = useForm({
     initialValues: {
       displayName: "",

@@ -1,7 +1,7 @@
 import { Box, Divider, Menu, Text } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import { useAppState, user } from "../../utils/gun";
+import { useGun, useUser } from "../../hooks";
 
 type Page = "Home" | "Profile";
 
@@ -9,7 +9,8 @@ interface PropTypes {}
 
 const NavMenu: FC<PropTypes> = () => {
   const router = useRouter();
-  const { isLoggedIn, reset } = useAppState();
+  const { user } = useGun();
+  const { isLoggedIn, reset } = useUser();
   const [currentPage, setCurrentPage] = useState<Page>("Home");
   return (
     <Box
@@ -17,7 +18,6 @@ const NavMenu: FC<PropTypes> = () => {
         display: "flex",
         justifyContent: "flex-end",
         padding: 10,
-        border: "1px solid red",
       }}
     >
       <Box sx={{ marginRight: 10 }}>

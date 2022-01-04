@@ -19,18 +19,39 @@ export interface UserDetails extends BaseUserDetails {
 }
 
 export interface UserLink {
+  id: string;
   type: string;
-  title: string;
+  label: string;
   url: string;
 }
+export type UserData = { userId: string; isLoggedIn: boolean };
+export type GunData = { gun: Gun; user: User };
 
 export type User = Gun & {
   is: { alias: string; epub: string; pub: string };
 };
 export interface AppContext {
   userId: string;
-  setUserId: (userId: string) => void;
   isLoggedIn: boolean;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  setUser: (userData: UserData) => void;
+  reset: () => void;
+}
+
+export interface UseGunState {
+  gun: Gun;
+  user: User;
+}
+
+export interface UseUserState {
+  userId: string;
+  isLoggedIn: boolean;
+}
+
+export interface UseGunActions {
+  reset: () => void;
+}
+
+export interface UseUserActions {
+  setUser: (userData: UserData) => void;
   reset: () => void;
 }

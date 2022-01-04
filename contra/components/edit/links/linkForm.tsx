@@ -1,7 +1,7 @@
 import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Dispatch, FC, SetStateAction, useEffect } from "react";
-import { useAppState } from "../../../utils/gun";
+import { useGun, useUser } from "../../../hooks";
 
 interface PropTypes {
   linkId?: string;
@@ -9,7 +9,8 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ linkId, setOpen }) => {
-  const { userId, gun } = useAppState();
+  const { gun } = useGun();
+  const { userId } = useUser();
   const form = useForm({
     initialValues: {
       label: "",
