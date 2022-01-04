@@ -1,9 +1,9 @@
 import { Blockquote, Box, Button, Divider, Title } from "@mantine/core";
 import { useRouter } from "next/router";
-import { BiLockAlt, BiLockOpen, BiEdit } from "react-icons/bi";
-import { IconContext } from "react-icons/lib";
 import { FC } from "react";
-import { useAppState } from "../../utils/gun";
+import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
+import { IconContext } from "react-icons/lib";
+import { useUser } from "../../hooks";
 
 interface ProfileHeaderProps {
   displayName: string;
@@ -34,8 +34,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   privacyType,
 }) => {
   const router = useRouter();
-  const { userId } = useAppState();
-
+  const { userId } = useUser();
   return (
     <IconContext.Provider value={{ style: { fontSize: "24px" } }}>
       <Box

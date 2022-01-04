@@ -1,13 +1,13 @@
-import { Box, Button, Checkbox, TextInput, Title } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
 import AccountDetails from "../../../components/edit/accountDetails/accountDetails";
 import Links from "../../../components/edit/links/links";
-import { useAppState } from "../../../utils/gun";
+import { useGun, useUser } from "../../../hooks";
 
 export default function Edit() {
-  const { gun, userId } = useAppState();
-
+  const { gun } = useGun();
+  const { userId } = useUser();
   const form = useForm({
     initialValues: {
       displayName: "",

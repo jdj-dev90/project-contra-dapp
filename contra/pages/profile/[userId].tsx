@@ -2,13 +2,14 @@ import { Box, Divider } from "@mantine/core";
 import { useEffect, useState } from "react";
 import DisplayLinkList from "../../components/profile/displayLinkList";
 import ProfileHeader from "../../components/profile/header";
+import { useGun, useUser } from "../../hooks";
 import { UserDetails } from "../../types";
-import { useAppState } from "../../utils/gun";
 
 export default function Profile() {
   const [details, setDetails] = useState<UserDetails>();
-  const { userId, gun } = useAppState();
 
+  const { gun } = useGun();
+  const { userId } = useUser();
   useEffect(() => {
     gun.get(`${userId}`).once((val) => {
       setDetails(val as UserDetails);

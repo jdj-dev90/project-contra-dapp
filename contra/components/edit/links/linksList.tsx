@@ -1,33 +1,13 @@
-import { Box, Card, Text } from "@mantine/core";
-import { FC, useEffect, useState } from "react";
-import { useAppState } from "../../../utils/gun";
+import { Box, Button, Card, Text } from "@mantine/core";
+import { FC, useState } from "react";
+import { useLinks } from "../../../hooks";
 
 interface PropTypes {
   modalOpen: boolean;
 }
 
 const LinksList: FC<PropTypes> = ({ modalOpen }) => {
-  const { userId, gun } = useAppState();
-
-  const [links, setLinks]: any[] = useState([]);
-
-  useEffect(() => {
-    if (userId && !modalOpen) {
-      const arr: any = [];
-
-      gun
-        .get(`${userId}`)
-        .get("links")
-        .map()
-        .once((link: any, id) => {
-          // console.log({ link, id });
-          arr.push({ label: link.label, type: link.type, url: link.url, id });
-          // console.log("arr", { arr });
-          // setLinks(arr);
-        });
-    }
-  }, [userId, modalOpen]);
-
+  const { links, deleteLink } = useLinks();
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ width: "60%" }}>
@@ -56,6 +36,7 @@ const LinksList: FC<PropTypes> = ({ modalOpen }) => {
 
                 <Box></Box>
               </Box>
+              <Button onClick={() => deleteLink(l.id)}>Delete</Button>
             </Card>
             // <Box
             //   key={`${l.id}-${ix}`}

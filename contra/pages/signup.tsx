@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
+import { useGun, useUser } from "../hooks";
 import { UserDetails } from "../types";
-import { useAppState } from "../utils/gun";
 
 function createUserDetails(
   userId: string,
@@ -23,7 +23,8 @@ function createUserDetails(
 }
 
 export default function Signup() {
-  const { gun, user, setUserId, setIsLoggedIn } = useAppState();
+  const { gun, user } = useGun();
+  const { setUser } = useUser();
 
   const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);
@@ -58,8 +59,7 @@ export default function Signup() {
           .put(createUserDetails(ack.pub, values.username, values.displayName));
         const userDetails = gun.get("users").set(newUser);
 
-        setUserId(ack.pub);
-        setIsLoggedIn(true);
+        setUser({ userId: ack.pub, isLoggedIn: true });
 
         router.push(`/profile/${ack.pub}`);
       }

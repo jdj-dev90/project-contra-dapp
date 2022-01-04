@@ -4,11 +4,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
-import { useAppState } from "../utils/gun";
+import { useGun, useUser } from "../hooks";
 
 export default function Signin() {
   const router = useRouter();
-  const { user, setUserId, setIsLoggedIn } = useAppState();
+  const { user } = useGun();
+  const { setUser } = useUser();
 
   const [authError, setAuthError] = useState<string | null>(null);
   const form = useForm({
@@ -34,8 +35,7 @@ export default function Signin() {
         console.log("error", { err: ack.err });
         setAuthError(ack.err);
       } else {
-        setUserId(ack.sea.pub);
-        setIsLoggedIn(true);
+        setUser({ userId: ack.sea.pub, isLoggedIn: true });
         router.push(`/profile/${ack.sea.pub}`);
       }
     });
