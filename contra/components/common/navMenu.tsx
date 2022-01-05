@@ -1,4 +1,11 @@
-import { Autocomplete, Box, Button, Divider, Menu, Text } from "@mantine/core";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Menu,
+  Paper,
+  useMantineTheme,
+} from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { BiNetworkChart, BiSearchAlt } from "react-icons/bi";
@@ -11,6 +18,8 @@ type Page = "Home" | "Profile";
 interface PropTypes {}
 
 const NavMenu: FC<PropTypes> = () => {
+  const theme = useMantineTheme();
+
   const router = useRouter();
   const { user } = useGun();
   const { isLoggedIn, reset } = useUser();
@@ -20,12 +29,13 @@ const NavMenu: FC<PropTypes> = () => {
   console.log("user", { user });
 
   return (
-    <Box
+    <Paper
+      padding="md"
+      shadow="sm"
       sx={{
         display: "flex",
         padding: 10,
         justifyContent: "space-between",
-        borderBottom: "1px solid black",
       }}
     >
       <Box
@@ -101,6 +111,9 @@ const NavMenu: FC<PropTypes> = () => {
               </button>
             }
           >
+            <Menu.Item onClick={() => router.push(`/test`)}>
+              Test page
+            </Menu.Item>
             {isLoggedIn && (
               <Menu.Item
                 color="red"
@@ -132,59 +145,7 @@ const NavMenu: FC<PropTypes> = () => {
           </Menu>
         </Box>
       </Box>
-    </Box>
-    // <Box
-    //   sx={{
-    //     display: "flex",
-    //     justifyContent: "flex-end",
-    //     padding: 10,
-    //   }}
-    // >
-    //   <Box sx={{ marginRight: 10 }}>
-    //     <Text>{currentPage}</Text>
-    //   </Box>
-    //   <Menu>
-    //     <Menu.Label>Navigation</Menu.Label>
-    //     <Menu.Item
-    //       disabled={!isLoggedIn}
-    //       onClick={() => {
-    //         setCurrentPage("Home");
-    //         router.push("/");
-    //       }}
-    //     >
-    //       Home
-    //     </Menu.Item>
-    //     <Menu.Item
-    //       disabled={!isLoggedIn}
-    //       onClick={() => {
-    //         setCurrentPage("Profile");
-    //         router.push(`/profile/${user.is.pub}`);
-    //       }}
-    //     >
-    //       Profile
-    //     </Menu.Item>
-    //     <Divider />
-    //     <Menu.Label>Account</Menu.Label>
-
-    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signin`)}>
-    //       Sign In
-    //     </Menu.Item>
-    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signup`)}>
-    //       Sign Up
-    //     </Menu.Item>
-    //     <Menu.Item
-    //       disabled={!isLoggedIn}
-    //       color="red"
-    //       onClick={() => {
-    //         user.leave();
-    //         reset();
-    //         router.push(`/`);
-    //       }}
-    //     >
-    //       Logout
-    //     </Menu.Item>
-    //   </Menu>
-    // </Box>
+    </Paper>
   );
 };
 

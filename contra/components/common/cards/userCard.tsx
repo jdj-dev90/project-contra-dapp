@@ -1,4 +1,4 @@
-import { Box, Button, Card, Text } from "@mantine/core";
+import { Box, Button, Paper, Text } from "@mantine/core";
 import { FC, useState } from "react";
 import SeededAvatar from "./seededAvatar";
 
@@ -91,7 +91,10 @@ const UserCard: FC<PropTypes> = ({ type }) => {
   });
 
   return (
-    <Card
+    <Paper
+      padding="md"
+      shadow="sm"
+      withBorder
       sx={{
         display: "flex",
         alignItems: "center",
@@ -158,7 +161,7 @@ const UserCard: FC<PropTypes> = ({ type }) => {
           </Box>
         )}
       </Box>
-    </Card>
+    </Paper>
   );
 };
 

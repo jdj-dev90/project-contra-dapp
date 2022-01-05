@@ -13,7 +13,6 @@ const ModalWrapper: FC<PropTypes> = ({ open, setOpen, children }) => {
       opened={open}
       onClose={() => setOpen(false)}
       title="Introduce yourself!"
-      // overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
       overlayOpacity={0.95}
     >
       <Box>{children}</Box>

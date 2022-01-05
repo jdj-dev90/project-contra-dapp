@@ -1,9 +1,9 @@
-import { ActionIcon, Box, Button, Card, Text } from "@mantine/core";
-import { FC, useState } from "react";
-import { BiEdit, BiTrash } from "react-icons/bi";
-import { UserLink } from "../../../types";
-import { useSpring, animated } from "react-spring";
+import { ActionIcon, Box, Paper, Text } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
+import { FC } from "react";
+import { BiEdit, BiTrash } from "react-icons/bi";
+import { animated, useSpring } from "react-spring";
+import { UserLink } from "../../../types";
 
 interface PropTypes {
   link: UserLink;
@@ -25,12 +25,17 @@ const EditLink: FC<PropTypes> = ({ onDelete, onEdit, link }) => {
         alignItems: "center",
       }}
     >
-      <Card
+      <Paper
+        padding="md"
+        shadow="sm"
+        withBorder
         sx={{
           display: "flex",
-          width: "100%",
+          alignItems: "center",
+          justifyContent: "space-between",
           padding: "5px",
           cursor: "pointer",
+          width: "100%",
         }}
         component="a"
         href={link.url}
@@ -48,7 +53,7 @@ const EditLink: FC<PropTypes> = ({ onDelete, onEdit, link }) => {
             {link.label}
           </Text>
         </Box>
-      </Card>
+      </Paper>
 
       {(!!onEdit || !!onDelete) && (
         <animated.div style={props}>

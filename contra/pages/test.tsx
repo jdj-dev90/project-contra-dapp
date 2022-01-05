@@ -1,4 +1,4 @@
-import { Box, Text } from "@mantine/core";
+import { Box, Paper, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { FC } from "react";
 import EditLink from "../components/common/cards/editLink";
@@ -13,12 +13,17 @@ const Spacer: FC<{ children: any }> = ({ children }) => {
 const Test: NextPage = () => {
   return (
     <Box>
-      <Spacer>
-        <SeededAvatar
-          seed="elasfdghjdghksdgha fregsfghjsfghjfont"
-          onEdit={() => console.log("clicked")}
-        />
-      </Spacer>
+      <Paper>
+        <Spacer>
+          <Text weight={500} size="sm">
+            avatar
+          </Text>
+          <SeededAvatar
+            seed="elasfdghjdghksdgha fregsfghjsfghjfont"
+            onEdit={() => console.log("clicked")}
+          />
+        </Spacer>
+      </Paper>
       <Spacer>
         <Text weight={500} size="sm">
           add someone (outbound)
@@ -32,6 +37,9 @@ const Test: NextPage = () => {
         <UserCard type="inbound" />
       </Spacer>
       <Spacer>
+        <Text weight={500} size="sm">
+          link
+        </Text>
         <EditLink
           link={{
             id: "testetsttest testtest",
