@@ -13,7 +13,10 @@ const Test: NextPage = () => {
   return (
     <Box>
       <Spacer>
-        <SeededAvatar seed="elafont" onEdit={() => console.log("clicked")} />
+        <SeededAvatar
+          seed="elasfdghjdghksdgha fregsfghjsfghjfont"
+          onEdit={() => console.log("clicked")}
+        />
       </Spacer>
       <Spacer>
         <EditLink

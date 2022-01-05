@@ -1,4 +1,10 @@
-import { ActionIcon, Avatar, Box, useMantineTheme } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  MantineNumberSize,
+  useMantineTheme,
+} from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { FC } from "react";
 import { BiEdit } from "react-icons/bi";
@@ -8,10 +14,12 @@ import * as style from "@dicebear/miniavs";
 
 interface PropTypes {
   seed: string | null;
+  radius?: MantineNumberSize;
+  size?: MantineNumberSize;
   onEdit?: () => void;
 }
 
-const SeededAvatar: FC<PropTypes> = ({ seed, onEdit }) => {
+const SeededAvatar: FC<PropTypes> = ({ seed, radius, size, onEdit }) => {
   const { hovered, ref } = useHover();
   const { colors, primaryColor } = useMantineTheme();
   const props = useSpring({
@@ -31,7 +39,7 @@ const SeededAvatar: FC<PropTypes> = ({ seed, onEdit }) => {
         alignItems: "center",
       }}
     >
-      <Avatar color="blue" radius="xl" size="xl">
+      <Avatar color="blue" radius={radius || "xl"} size={size || "xl"}>
         <img src={seededSvg} />
       </Avatar>
       {onEdit && (

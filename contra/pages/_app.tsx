@@ -1,6 +1,7 @@
 import { MantineProvider } from "@mantine/core";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { IconContext } from "react-icons/lib";
 import Layout from "../components/common/layout";
 
 export default function App(props: AppProps) {
@@ -24,9 +25,11 @@ export default function App(props: AppProps) {
           colorScheme: "dark",
         }}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <IconContext.Provider value={{ style: { fontSize: "18px" } }}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </IconContext.Provider>
       </MantineProvider>
     </>
   );
