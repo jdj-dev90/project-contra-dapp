@@ -9,9 +9,8 @@ import {
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
-import SeededAvatar from "../common/cards/seededAvatar";
-import { IconContext } from "react-icons/lib";
 import { useGunContext } from "../../hooks/useGunContext";
+import SeededAvatar from "../common/cards/seededAvatar";
 
 interface ProfileHeaderProps {
   displayName: string;

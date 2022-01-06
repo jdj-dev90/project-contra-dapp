@@ -7,9 +7,7 @@ import InputWrapper from "../components/wrappers/inputWrapper";
 import { useGunContext } from "../hooks/useGunContext";
 
 export default function Login() {
-  const router = useRouter();
-
-  const { onAuth, getUser, setUserProfile } = useGunContext();
+  const { login } = useGunContext();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const form = useForm({
@@ -28,23 +26,9 @@ export default function Login() {
     },
   });
 
-  const logIn = () => {
-    getUser().auth(form.values.username, form.values.password, (ack: any) => {
-      console.log({ ack });
-      if (ack.err) {
-        setAuthError(ack.err);
-      } else {
-        onAuth(() => {
-          setUserProfile();
-        });
-        router.push(`/profile/${ack.sea.pub}`);
-      }
-    });
-  };
-
   const handleSubmit = () => {
     setAuthError(null);
-    logIn();
+    login(form.values.username, form.values.password);
   };
 
   return (

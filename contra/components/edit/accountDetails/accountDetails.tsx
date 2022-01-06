@@ -1,14 +1,14 @@
 import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
-import SeededAvatar from "../../common/cards/seededAvatar";
 import { useGunContext } from "../../../hooks/useGunContext";
+import SeededAvatar from "../../common/cards/seededAvatar";
 
 export default function AccountDetails() {
   const { getUser, getGun, getCertificate, userProfile } = useGunContext();
   const form = useForm({
     initialValues: {
-      username: null,
+      username: "",
       displayName: "",
       bio: "",
       privacyType: "PUBLIC",
@@ -37,6 +37,7 @@ export default function AccountDetails() {
   useEffect(() => {
     if (userProfile) {
       form.setValues({
+        username: userProfile.username,
         displayName: userProfile.displayName,
         bio: userProfile.bio,
         privacyType: userProfile.privacyType,

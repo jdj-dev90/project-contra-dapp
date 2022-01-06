@@ -8,19 +8,18 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import { useGunContext } from "../../hooks/useGunContext";
 import useSessionChannel from "../../utils/useSessionChannel";
-import SeededAvatar from "./cards/seededAvatar";
-import { IconContext } from "react-icons/lib";
 import { BiNetworkChart, BiSearchAlt } from "react-icons/bi";
+import { IconContext } from "react-icons/lib";
+import SeededAvatar from "./cards/seededAvatar";
+import { useGunContext } from "../../hooks/useGunContext";
 
 type Page = "Home" | "Profile";
 
 interface PropTypes {}
 const NavMenu: FC<PropTypes> = () => {
-  const { getUser, userProfile, clearSession } = useGunContext();
   const theme = useMantineTheme();
-
+  const { getUser, userProfile, clearSession } = useGunContext();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<Page>("Home");
   const isLoggedIn = !!userProfile;
@@ -129,10 +128,8 @@ const NavMenu: FC<PropTypes> = () => {
               <Menu.Item
                 color="red"
                 onClick={() => {
-                  getUser().leave();
                   logout();
-                  router.push(`/`);
-                  console.log("done");
+                  router.push("/");
                 }}
               >
                 Logout
@@ -158,40 +155,6 @@ const NavMenu: FC<PropTypes> = () => {
         </Box>
       </Box>
     </Paper>
-    //       Home
-    //     </Menu.Item>
-    //     <Menu.Item
-    //       disabled={!isLoggedIn}
-    //       onClick={() => {
-    //         setCurrentPage("Profile");
-    //         router.push(`/profile/${getUser().is.pub}`);
-    //       }}
-    //     >
-    //       Profile
-    //     </Menu.Item>
-    //     <Divider />
-    //     <Menu.Label>Account</Menu.Label>
-
-    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signin`)}>
-    //       Sign In
-    //     </Menu.Item>
-    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signup`)}>
-    //       Sign Up
-    //     </Menu.Item>
-    //     <Menu.Item
-    //       disabled={!isLoggedIn}
-    //       color="red"
-    //       onClick={() => {
-    //         logout();
-    //         // reset();
-    //         router.push(`/`);
-    //         console.log("done");
-    //       }}
-    //     >
-    //       Logout
-    //     </Menu.Item>
-    //   </Menu>
-    // </Box>
   );
 };
 

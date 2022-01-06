@@ -17,21 +17,20 @@ export default function App(props: AppProps) {
         />
       </Head>
       <GunContextProvider>
-
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "dark",
-        }}
-      >
-        <IconContext.Provider value={{ style: { fontSize: "18px" } }}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </IconContext.Provider>
-      </MantineProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: "dark",
+          }}
+        >
+          <IconContext.Provider value={{ style: { fontSize: "18px" } }}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </IconContext.Provider>
+        </MantineProvider>
       </GunContextProvider>
     </>
   );

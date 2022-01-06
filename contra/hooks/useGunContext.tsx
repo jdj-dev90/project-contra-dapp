@@ -1,23 +1,3 @@
-/*
- * Provide one instance of gun to your entire app.
- * NOTE Using this component blocks render until gun is ready
- *
- * Usage examples:
- * // index.js
- *   import { GunContextProvider } from './useGunContext'
- *   // ...
- *   <GunContextProvider>
- *     <App />
- *   </GunContextProvider>
- *
- * // App.js
- *   import useGunContext from './useGunContext'
- *   // ...
- *   const { getGun, getUser } = useGunContext()
- *
- *   getGun().get('ours').put('this')
- *   getUser().get('mine').put('that')
- */
 import Gun from "gun/gun";
 import "gun/sea";
 import "./gun.unset";
@@ -29,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { ProfileDetails, UserLink } from "../types";
+import { useRouter } from "next/router";
 
 const createDefaultUserProfile = (username: string) => ({
   username,
@@ -46,35 +27,37 @@ export const useGun = () => {
   const onAuthCbRef = useRef<any>();
   const [userProfile, setUserProfile] = useState<ProfileDetails | null>(null);
   const [links, setLinks] = useState<UserLink[]>([]);
-  // console.log({ links }, "!!!");
+  const [authError, setAuthError] = useState<string | null>(null);
 
   //////////////////////////////////////////
 
-  const getGun = () => gunRef.current;
-  const getUser = () => userRef.current;
-  const getCertificate = () => certificateRef.current;
+  const _getGun = () => gunRef.current;
+  const _getUser = () => userRef.current;
+  const _getCertificate = () => certificateRef.current;
 
   //////////////////////////////////////////
+
+  const router = useRouter();
 
   const _setUserProfile = () => {
-    getGun()
+    _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(getUser().is.pub)
+      .get(_getUser().is.pub)
       .once((profile: any) => {
         if (profile) {
           setUserProfile(profile);
         } else {
-          getUser()
+          _getUser()
             .get("alias")
             .once((username: string) => {
               const defaultProfile = createDefaultUserProfile(username);
-              getGun()
+              _getGun()
                 .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
                 .get("profiles")
-                .get(getUser().is.pub)
+                .get(_getUser().is.pub)
                 .put(defaultProfile, null, {
-                  opt: { cert: getCertificate() },
+                  opt: { cert: _getCertificate() },
                 });
               setUserProfile(defaultProfile);
             });
@@ -83,10 +66,10 @@ export const useGun = () => {
   };
 
   const _setLinks = () => {
-    getGun()
+    _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(getUser().is.pub)
+      .get(_getUser().is.pub)
       .get("links")
       .map()
       .once((link: any, id: string) => {
@@ -101,20 +84,20 @@ export const useGun = () => {
   };
 
   const _deleteLink = (id: string) => {
-    const link = getGun().get(id);
-    getGun()
+    const link = _getGun().get(id);
+    _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(getUser().is.pub)
+      .get(_getUser().is.pub)
       .get("links")
       .unset(link, null, {
-        opt: { cert: getCertificate() },
+        opt: { cert: _getCertificate() },
       });
   };
 
-  const clearSession = () => {
+  const _clearSession = () => {
     setUserProfile(null);
-    const user = getUser();
+    const user = _getUser();
 
     user.leave();
 
@@ -233,23 +216,63 @@ export const useGun = () => {
     certificate: certificateRef.current,
     userProfile,
   });
+  const _login = (username: string, password: string) => {
+    //signup
+    _getUser().auth(username, password, (ack: any) => {
+      console.log({ ack }, "getUser");
+      if (ack.err) {
+        setAuthError(ack.err);
+      } else {
+        // onAuthCbRef.current = setUserProfile()
+        // onAuth(() => {
+        //   setUserProfile();
+        // });
+        router.push(`/profile/${ack.sea.pub}`);
+      }
+    });
+  };
+
+  const _signup = (username: string, password: string) => {
+    setAuthError(null);
+
+    // check if user with username already exists
+    _getGun()
+      .get(`~@${username}`)
+      .once((user: any) => {
+        console.log({ user });
+        if (user) {
+          setAuthError("Username already taken");
+        } else {
+          _getUser().create(username, password, ({ err, pub }: any) => {
+            console.log({ err, pub });
+            if (err) {
+              setAuthError(err);
+            } else {
+              _login(username, password);
+            }
+          });
+        }
+      });
+  };
 
   return {
+    login: _login,
+    signup: _signup,
     userProfile,
     setUserProfile: _setUserProfile,
     setLinks: _setLinks,
     deleteLink: _deleteLink,
     links,
-    getGun: getGun,
-    getUser: getUser,
-    getCertificate: getCertificate,
+    getGun: _getGun,
+    getUser: _getUser,
+    getCertificate: _getCertificate,
     setCertificate: (v: string | null) => {
       certificateRef.current = v;
     },
     onAuth: (cb: any) => {
       onAuthCbRef.current = cb;
     },
-    clearSession: clearSession,
+    clearSession: _clearSession,
   };
 };
 
