@@ -39,8 +39,6 @@ const NavMenu: FC<PropTypes> = () => {
 
   const [value, setValue] = useState("");
 
-  console.log("user", { user });
-
   return (
     <Paper
       padding="md"
@@ -86,7 +84,7 @@ const NavMenu: FC<PropTypes> = () => {
               variant="outline"
               onClick={() => {
                 setCurrentPage("Profile");
-                router.push(`/profile/${user.is.pub}`);
+                router.push(`/profile/${getUser().is.pub}`);
               }}
             >
               Profile
@@ -131,9 +129,10 @@ const NavMenu: FC<PropTypes> = () => {
               <Menu.Item
                 color="red"
                 onClick={() => {
-                  user.leave();
-                  reset();
+                  getUser().leave();
+                  logout();
                   router.push(`/`);
+                  console.log("done");
                 }}
               >
                 Logout
@@ -159,40 +158,40 @@ const NavMenu: FC<PropTypes> = () => {
         </Box>
       </Box>
     </Paper>
-          Home
-        </Menu.Item>
-        <Menu.Item
-          disabled={!isLoggedIn}
-          onClick={() => {
-            setCurrentPage("Profile");
-            router.push(`/profile/${getUser().is.pub}`);
-          }}
-        >
-          Profile
-        </Menu.Item>
-        <Divider />
-        <Menu.Label>Account</Menu.Label>
+    //       Home
+    //     </Menu.Item>
+    //     <Menu.Item
+    //       disabled={!isLoggedIn}
+    //       onClick={() => {
+    //         setCurrentPage("Profile");
+    //         router.push(`/profile/${getUser().is.pub}`);
+    //       }}
+    //     >
+    //       Profile
+    //     </Menu.Item>
+    //     <Divider />
+    //     <Menu.Label>Account</Menu.Label>
 
-        <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signin`)}>
-          Sign In
-        </Menu.Item>
-        <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signup`)}>
-          Sign Up
-        </Menu.Item>
-        <Menu.Item
-          disabled={!isLoggedIn}
-          color="red"
-          onClick={() => {
-            logout();
-            // reset();
-            router.push(`/`);
-            console.log("done");
-          }}
-        >
-          Logout
-        </Menu.Item>
-      </Menu>
-    </Box>
+    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signin`)}>
+    //       Sign In
+    //     </Menu.Item>
+    //     <Menu.Item disabled={isLoggedIn} onClick={() => router.push(`/signup`)}>
+    //       Sign Up
+    //     </Menu.Item>
+    //     <Menu.Item
+    //       disabled={!isLoggedIn}
+    //       color="red"
+    //       onClick={() => {
+    //         logout();
+    //         // reset();
+    //         router.push(`/`);
+    //         console.log("done");
+    //       }}
+    //     >
+    //       Logout
+    //     </Menu.Item>
+    //   </Menu>
+    // </Box>
   );
 };
 

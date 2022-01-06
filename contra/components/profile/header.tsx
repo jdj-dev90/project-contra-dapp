@@ -75,7 +75,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <ActionIcon
               variant="outline"
               color="blue"
-              onClick={() => router.push(`/profile/edit/${userId}`)}
+              onClick={() => router.push(`/profile/edit/${getUser().is.pub}`)}
             >
               <BiEdit />
             </ActionIcon>
@@ -104,14 +104,14 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
       >
         <Button
           variant="outline"
-          onClick={() => router.push(`/profile/followers/${userId}`)}
+          onClick={() => router.push(`/profile/followers/${getUser().is.pub}`)}
         >
           Followers
         </Button>
         <Divider orientation="vertical" />
         <Button
           variant="outline"
-          onClick={() => router.push(`/profile/following/${userId}`)}
+          onClick={() => router.push(`/profile/following/${getUser().is.pub}`)}
         >
           Following
         </Button>
