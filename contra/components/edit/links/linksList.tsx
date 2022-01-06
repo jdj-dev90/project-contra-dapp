@@ -28,10 +28,11 @@ const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
             <EditLink
               key={`${l.id}-${ix}`}
               link={l}
-              onDelete={() => deleteLink(l.id)}
-              onEdit={() => {
-                setLink(l);
-                setModalOpen(true);
+              onDelete={(lId: string) => deleteLink(lId)}
+              onEdit={(l: UserLink) => {
+                console.log({ l });
+                // setLink(l);
+                // setModalOpen(true);
               }}
             />
           ) : (
