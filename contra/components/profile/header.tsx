@@ -1,9 +1,16 @@
-import { Blockquote, Box, Button, Divider, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Blockquote,
+  Box,
+  Button,
+  Divider,
+  Title,
+} from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
-import { IconContext } from "react-icons/lib";
 import { useGunContext } from "../../hooks/useGunContext";
+import SeededAvatar from "../common/cards/seededAvatar";
 
 interface ProfileHeaderProps {
   displayName: string;
@@ -36,77 +43,79 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   const router = useRouter();
   const { getUser } = useGunContext();
   return (
-    <IconContext.Provider value={{ style: { fontSize: "24px" } }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 10,
+      }}
+    >
+      <HeaderItem>
         <HeaderItem>
-          <Title order={2}>{displayName}</Title>
-          <Box
-            sx={{
-              display: "flex",
-              marginTop: "5px",
-              alignItems: "center",
-            }}
-          >
-            <HeaderItem>
-              <Title order={3}>{`$${username}`}</Title>
-            </HeaderItem>
-            <HeaderItem>
-              {privacyType === "PRIVATE" ? <BiLockAlt /> : <BiLockOpen />}
-            </HeaderItem>
-            <HeaderItem>
-              <BiEdit
-                onClick={() => router.push(`/profile/edit/${getUser().is.pub}`)}
-              />
-            </HeaderItem>
-          </Box>
+          <SeededAvatar seed={username} />
         </HeaderItem>
-        {bio ? (
-          <HeaderItem>
-            <Blockquote cite={username}>{bio}</Blockquote>
-          </HeaderItem>
-        ) : (
-          <HeaderItem>
-            <Blockquote cite={username}>
-              {displayName} testtest test testtest test testtesttest te st test
-            </Blockquote>
-          </HeaderItem>
-        )}
 
+        <Title order={2}>{displayName}</Title>
         <Box
           sx={{
             display: "flex",
-            width: "100%",
-            justifyContent: "space-around",
-            paddingTop: 10,
+            marginTop: "5px",
+            alignItems: "center",
           }}
         >
-          <Button
-            variant="outline"
-            onClick={() =>
-              router.push(`/profile/followers/${getUser().is.pub}`)
-            }
-          >
-            Followers
-          </Button>
-          <Divider orientation="vertical" />
-          <Button
-            variant="outline"
-            onClick={() =>
-              router.push(`/profile/following/${getUser().is.pub}`)
-            }
-          >
-            Following
-          </Button>
+          <HeaderItem>
+            <Title order={3}>{`$${username}`}</Title>
+          </HeaderItem>
+          <HeaderItem>
+            {privacyType === "PRIVATE" ? <BiLockAlt /> : <BiLockOpen />}
+          </HeaderItem>
+          <HeaderItem>
+            <ActionIcon
+              variant="outline"
+              color="blue"
+              onClick={() => router.push(`/profile/edit/${userId}`)}
+            >
+              <BiEdit />
+            </ActionIcon>
+          </HeaderItem>
         </Box>
+      </HeaderItem>
+      {bio ? (
+        <HeaderItem>
+          <Blockquote cite={username}>{bio}</Blockquote>
+        </HeaderItem>
+      ) : (
+        <HeaderItem>
+          <Blockquote cite={username}>
+            {displayName} testtest test testtest test testtesttest te st test
+          </Blockquote>
+        </HeaderItem>
+      )}
+
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-around",
+          paddingTop: 10,
+        }}
+      >
+        <Button
+          variant="outline"
+          onClick={() => router.push(`/profile/followers/${userId}`)}
+        >
+          Followers
+        </Button>
+        <Divider orientation="vertical" />
+        <Button
+          variant="outline"
+          onClick={() => router.push(`/profile/following/${userId}`)}
+        >
+          Following
+        </Button>
       </Box>
-    </IconContext.Provider>
+    </Box>
   );
 };
 
