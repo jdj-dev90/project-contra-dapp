@@ -8,7 +8,7 @@ import { useGunContext } from "../hooks/useGunContext";
 
 export default function Login() {
   const router = useRouter();
-  const { getGun, getUser, setUserProfile, onAuth } = useGunContext();
+  const { signup, getUser, setUserProfile, onAuth } = useGunContext();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const form = useForm({
@@ -30,56 +30,8 @@ export default function Login() {
     },
   });
 
-  const onCreateSuccess = ({ pub }: { pub: string }) => {
-    console.log({
-      createSuccess: {
-        username: form.values.username,
-        pub,
-      },
-    });
-
-    logIn();
-  };
-
-  const logIn = async () => {
-    getUser().auth(form.values.username, form.values.password, (ack: any) => {
-      console.log({ ack }, "getUser");
-      if (ack.err) {
-        setAuthError(ack.err);
-      } else {
-        onAuth(() => {
-          setUserProfile();
-        });
-        router.push(`/profile/${ack.sea.pub}`);
-      }
-    });
-  };
-
   const handleSignUp = () => {
-    setAuthError(null);
-
-    // check if user with username already exists
-    getGun()
-      .get(`~@${form.values.username}`)
-      .once((user: any) => {
-        console.log({ user });
-        if (user) {
-          setAuthError("Username already taken");
-        } else {
-          getUser().create(
-            form.values.username,
-            form.values.password,
-            ({ err, pub }: any) => {
-              console.log({ err, pub });
-              if (err) {
-                setAuthError(err);
-              } else {
-                onCreateSuccess({ pub });
-              }
-            }
-          );
-        }
-      });
+    signup(form.values.username, form.values.password);
   };
 
   return (
