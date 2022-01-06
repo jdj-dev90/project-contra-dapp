@@ -10,6 +10,7 @@ interface PropTypes {}
 const Links: FC<PropTypes> = () => {
   const [open, setOpen] = useState(false);
   const [link, setLink] = useState<UserLink | null>(null);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", marginTop: "30px" }}>
       <Title order={2}>Links</Title>

@@ -1,18 +1,17 @@
 import { IGunChainReference } from "gun/types/chain";
+import { IGunStaticSEA } from "gun/types/static/sea";
 
 export interface UserTheme {
   primaryColor: string;
 }
 
-export type Gun = IGunChainReference<any, any, "pre_root">;
+export type Gun = IGunChainReference<any, any, false>;
+export type SEA = IGunStaticSEA;
 
 export type GunUser = IGunChainReference;
-export interface BaseUserDetails {
-  userId: string;
+export interface ProfileDetails {
   avatar: string;
   displayName: string;
-}
-export interface UserDetails extends BaseUserDetails {
   bio: string;
   username: string;
   privacyType: string;
@@ -42,16 +41,6 @@ export interface UseGunState {
   user: User;
 }
 
-export interface UseUserState {
-  userId: string;
-  isLoggedIn: boolean;
-}
-
 export interface UseGunActions {
-  reset: () => void;
-}
-
-export interface UseUserActions {
-  setUser: (userData: UserData) => void;
   reset: () => void;
 }

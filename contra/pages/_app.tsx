@@ -3,10 +3,10 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { IconContext } from "react-icons/lib";
 import Layout from "../components/common/layout";
+import { GunContextProvider } from "../hooks/useGunContext";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
-
   return (
     <>
       <Head>
@@ -16,6 +16,7 @@ export default function App(props: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      <GunContextProvider>
 
       <MantineProvider
         withGlobalStyles
@@ -31,6 +32,7 @@ export default function App(props: AppProps) {
           </Layout>
         </IconContext.Provider>
       </MantineProvider>
+      </GunContextProvider>
     </>
   );
 }

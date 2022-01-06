@@ -9,8 +9,9 @@ import {
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
-import { useUser } from "../../hooks";
 import SeededAvatar from "../common/cards/seededAvatar";
+import { IconContext } from "react-icons/lib";
+import { useGunContext } from "../../hooks/useGunContext";
 
 interface ProfileHeaderProps {
   displayName: string;
@@ -41,7 +42,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   privacyType,
 }) => {
   const router = useRouter();
-  const { userId } = useUser();
+  const { getUser } = useGunContext();
   return (
     <Box
       sx={{

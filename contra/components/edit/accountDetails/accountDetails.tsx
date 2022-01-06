@@ -1,12 +1,11 @@
 import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
-import { useGun, useUser } from "../../../hooks";
 import SeededAvatar from "../../common/cards/seededAvatar";
+import { useGunContext } from "../../../hooks/useGunContext";
 
 export default function AccountDetails() {
-  const { gun } = useGun();
-  const { userId } = useUser();
+  const { getUser, getGun, getCertificate, userProfile } = useGunContext();
   const form = useForm({
     initialValues: {
       username: null,
@@ -25,22 +24,26 @@ export default function AccountDetails() {
     },
   });
 
+  const onSave = (values: typeof form["values"]) => {
+    getGun()
+      .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
+      .get("profiles")
+      .get(getUser().is.pub)
+      .put(values, null, {
+        opt: { cert: getCertificate() },
+      });
+  };
+
   useEffect(() => {
-    if (userId) {
-      gun.get(`${userId}`).once((val) => {
-        form.setValues({
-          username: val?.username || null,
-          displayName: val?.displayName || "",
-          bio: val?.bio || "",
-          privacyType: val?.privacyType || "PUBLIC",
-        });
+    if (userProfile) {
+      form.setValues({
+        displayName: userProfile.displayName,
+        bio: userProfile.bio,
+        privacyType: userProfile.privacyType,
       });
     }
-  }, [userId]);
-
-  const onSave = (values: typeof form["values"]) =>
-    gun.get(`${userId}`).put(values);
-
+  }, [userProfile]);
+  console.log({ userProfile });
   return (
     <>
       <Title order={2}>Account Details</Title>

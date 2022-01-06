@@ -1,7 +1,7 @@
 import { Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
-import { useGun, useUser } from "../../../hooks";
+import { Dispatch, FC, SetStateAction } from "react";
+import { useGunContext } from "../../../hooks/useGunContext";
 import { UserLink } from "../../../types";
 
 interface PropTypes {
@@ -10,8 +10,7 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
-  const { gun } = useGun();
-  const { userId } = useUser();
+  const { getGun, getUser, getCertificate } = useGunContext();
   const form = useForm({
     initialValues: {
       label: link?.label || "",
@@ -31,12 +30,27 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
   });
 
   const onSave = ({ id, ...values }: typeof form["values"]) => {
-    const links = gun.get(`${userId}`).get("links");
+    const links = getGun()
+      .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
+      .get("profiles")
+      .get(getUser().is.pub)
+      .get("links");
+
+    console.log({ id, ...values });
     if (id) {
-      gun.get(id).put(values);
+      // UPDATE
+      links.set(links.get(id), null, {
+        opt: { cert: getCertificate() },
+      });
     } else {
-      links.set(values);
+      // CREATE
+
+      links.set(values, null, {
+        opt: { cert: getCertificate() },
+      });
     }
+    console.log({ links });
+
     setModalOpen(false);
   };
 
