@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
 import { IconContext } from "react-icons/lib";
-import { useUser } from "../../hooks";
+import { useGunContext } from "../../hooks/useGunContext";
 
 interface ProfileHeaderProps {
   displayName: string;
@@ -34,7 +34,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   privacyType,
 }) => {
   const router = useRouter();
-  const { userId } = useUser();
+  const { getUser } = useGunContext();
   return (
     <IconContext.Provider value={{ style: { fontSize: "24px" } }}>
       <Box
@@ -61,7 +61,9 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
               {privacyType === "PRIVATE" ? <BiLockAlt /> : <BiLockOpen />}
             </HeaderItem>
             <HeaderItem>
-              <BiEdit onClick={() => router.push(`/profile/edit/${userId}`)} />
+              <BiEdit
+                onClick={() => router.push(`/profile/edit/${getUser().is.pub}`)}
+              />
             </HeaderItem>
           </Box>
         </HeaderItem>
@@ -87,14 +89,18 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
         >
           <Button
             variant="outline"
-            onClick={() => router.push(`/profile/followers/${userId}`)}
+            onClick={() =>
+              router.push(`/profile/followers/${getUser().is.pub}`)
+            }
           >
             Followers
           </Button>
           <Divider orientation="vertical" />
           <Button
             variant="outline"
-            onClick={() => router.push(`/profile/following/${userId}`)}
+            onClick={() =>
+              router.push(`/profile/following/${getUser().is.pub}`)
+            }
           >
             Following
           </Button>

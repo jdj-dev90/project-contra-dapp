@@ -1,6 +1,6 @@
 import { Box, Button, Card, Text } from "@mantine/core";
-import { Dispatch, FC, SetStateAction } from "react";
-import { useLinks } from "../../../hooks";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { useGunContext } from "../../../hooks/useGunContext";
 import { UserLink } from "../../../types";
 
 interface PropTypes {
@@ -10,7 +10,16 @@ interface PropTypes {
 }
 
 const LinksList: FC<PropTypes> = ({ modalOpen, setModalOpen, setLink }) => {
-  const { links, deleteLink } = useLinks();
+  const { getGun, getUser, onAuth, links, setLinks, deleteLink } =
+    useGunContext();
+
+  useEffect(() => {
+    console.log("SETTING LINKS");
+    onAuth(() => {
+      setLinks();
+    });
+  }, []);
+  console.log({ links });
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ width: "60%" }}>
@@ -39,7 +48,13 @@ const LinksList: FC<PropTypes> = ({ modalOpen, setModalOpen, setLink }) => {
 
                 <Box></Box>
               </Box>
-              <Button onClick={() => deleteLink(l.id)}>Delete</Button>
+              <Button
+                onClick={() => {
+                  deleteLink(l.id);
+                }}
+              >
+                Delete
+              </Button>
               <Button
                 onClick={() => {
                   setLink(l);

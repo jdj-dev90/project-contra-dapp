@@ -5,14 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "generate-app-key": "node ./generateAppKey.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bullet-catcher": "git+https://github.com/SuaYoo/bullet-catcher.git",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "gun": "^0.2020.1235",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.15"
   }
 }
