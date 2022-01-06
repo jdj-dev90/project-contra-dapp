@@ -1,17 +1,30 @@
 import { Box, Divider, Menu, Text } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import { useGun, useUser } from "../../hooks";
+import { useGunContext } from "../../hooks/useGunContext";
+import useSessionChannel from "../../utils/useSessionChannel";
 
 type Page = "Home" | "Profile";
 
 interface PropTypes {}
-
 const NavMenu: FC<PropTypes> = () => {
+  const { getUser, userProfile, clearSession } = useGunContext();
   const router = useRouter();
-  const { user } = useGun();
-  const { isLoggedIn, reset } = useUser();
   const [currentPage, setCurrentPage] = useState<Page>("Home");
+  const isLoggedIn = !!userProfile;
+  const sessionChannel = useSessionChannel();
+
+  const logout = (evt?: React.ChangeEvent<any>) => {
+    clearSession();
+
+    // logged out from click, notify other tabs
+    if (evt) {
+      sessionChannel.postMessage({
+        eventName: "REMOVE_YOUR_CREDS",
+      });
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -38,7 +51,7 @@ const NavMenu: FC<PropTypes> = () => {
           disabled={!isLoggedIn}
           onClick={() => {
             setCurrentPage("Profile");
-            router.push(`/profile/${user.is.pub}`);
+            router.push(`/profile/${getUser().is.pub}`);
           }}
         >
           Profile
@@ -56,9 +69,10 @@ const NavMenu: FC<PropTypes> = () => {
           disabled={!isLoggedIn}
           color="red"
           onClick={() => {
-            user.leave();
-            reset();
+            logout();
+            // reset();
             router.push(`/`);
+            console.log("done");
           }}
         >
           Logout

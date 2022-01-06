@@ -1,18 +1,16 @@
 import { Box } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useEffect } from "react";
 import AccountDetails from "../../../components/edit/accountDetails/accountDetails";
 import Links from "../../../components/edit/links/links";
-import { useGun, useUser } from "../../../hooks";
-
+import { useGunContext } from "../../../hooks/useGunContext";
 export default function Edit() {
-  const { gun } = useGun();
-  const { userId } = useUser();
+  const { getUser, userProfile } = useGunContext();
+
   const form = useForm({
     initialValues: {
-      displayName: "",
-      bio: "",
-      privacyType: "PUBLIC",
+      displayName: userProfile?.displayName || "",
+      bio: userProfile?.bio || "",
+      privacyType: userProfile?.privacyType || "PUBLIC",
     },
 
     validationRules: {
@@ -25,20 +23,7 @@ export default function Edit() {
     },
   });
 
-  useEffect(() => {
-    if (userId) {
-      gun.get(`${userId}`).once((val) => {
-        form.setValues({
-          displayName: val?.displayName || "",
-          bio: val?.bio || "",
-          privacyType: val?.privacyType || "PUBLIC",
-        });
-      });
-    }
-  }, [userId]);
-
-  const onSave = (values: typeof form["values"]) =>
-    gun.get(`${userId}`).put(values);
+  const onSave = (values: typeof form["values"]) => getUser().put(values);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

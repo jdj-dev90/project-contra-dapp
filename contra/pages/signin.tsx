@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
-import { useGun, useUser } from "../hooks";
+import { useGunContext } from "../hooks/useGunContext";
 
-export default function Signin() {
+export default function Login() {
   const router = useRouter();
-  const { user } = useGun();
-  const { setUser } = useUser();
 
+  const { onAuth, getUser, setUserProfile } = useGunContext();
   const [authError, setAuthError] = useState<string | null>(null);
+
   const form = useForm({
     initialValues: {
       username: "",
@@ -28,23 +28,29 @@ export default function Signin() {
     },
   });
 
-  const signInUser = (values: typeof form["values"]) => {
-    user.auth(values.username, values.password, function (ack: any) {
-      console.log({ ack }, "done authenticating user!");
+  const logIn = () => {
+    getUser().auth(form.values.username, form.values.password, (ack: any) => {
+      console.log({ ack });
       if (ack.err) {
-        console.log("error", { err: ack.err });
         setAuthError(ack.err);
       } else {
-        setUser({ userId: ack.sea.pub, isLoggedIn: true });
+        onAuth(() => {
+          setUserProfile();
+        });
         router.push(`/profile/${ack.sea.pub}`);
       }
     });
   };
 
+  const handleSubmit = () => {
+    setAuthError(null);
+    logIn();
+  };
+
   return (
     <Column sx={{ marginTop: "30px" }}>
       <Title order={3}>Sign In</Title>
-      <form onSubmit={form.onSubmit(signInUser)}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <InputWrapper>
           <TextInput
             {...form.getInputProps("username")}
@@ -56,6 +62,7 @@ export default function Signin() {
             }}
           />
         </InputWrapper>
+
         <InputWrapper>
           <TextInput
             {...form.getInputProps("password")}

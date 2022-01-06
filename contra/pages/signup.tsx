@@ -4,29 +4,11 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
-import { useGun, useUser } from "../hooks";
-import { UserDetails } from "../types";
+import { useGunContext } from "../hooks/useGunContext";
 
-function createUserDetails(
-  userId: string,
-  username: string,
-  displayName: string
-): UserDetails {
-  return {
-    userId,
-    avatar: "",
-    bio: "",
-    displayName: displayName,
-    privacyType: "PUBLIC",
-    username: username,
-  };
-}
-
-export default function Signup() {
-  const { gun, user } = useGun();
-  const { setUser } = useUser();
-
+export default function Login() {
   const router = useRouter();
+  const { getGun, getUser, setUserProfile, onAuth } = useGunContext();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const form = useForm({
@@ -38,37 +20,72 @@ export default function Signup() {
 
     validationRules: {
       username: (value) => value.length >= 4,
-      displayName: (value) => value.length >= 5,
+      displayName: (value) => value.length >= 4,
       password: (value) => value.length >= 8,
     },
     errorMessages: {
       username: "Must be at least 4 characters long.",
-      displayName: "Must be at least 5 characters long.",
+      displayName: "Must be at least 4 characters long.",
       password: "Must be at least 8 characters long.",
     },
   });
 
-  const signUpUser = (values: typeof form["values"]) => {
-    user.create(values.username, values.password, function (ack: any) {
-      console.log({ ack }, "done creating user!");
+  const onCreateSuccess = ({ pub }: { pub: string }) => {
+    console.log({
+      createSuccess: {
+        username: form.values.username,
+        pub,
+      },
+    });
+
+    logIn();
+  };
+
+  const logIn = async () => {
+    getUser().auth(form.values.username, form.values.password, (ack: any) => {
+      console.log({ ack }, "getUser");
       if (ack.err) {
-        console.log("error", { err: ack.err });
+        setAuthError(ack.err);
       } else {
-        const newUser = gun
-          .get(ack.pub)
-          .put(createUserDetails(ack.pub, values.username, values.displayName));
-        const userDetails = gun.get("users").set(newUser);
-
-        setUser({ userId: ack.pub, isLoggedIn: true });
-
-        router.push(`/profile/${ack.pub}`);
+        onAuth(() => {
+          setUserProfile();
+        });
+        router.push(`/profile/${ack.sea.pub}`);
       }
     });
   };
+
+  const handleSignUp = () => {
+    setAuthError(null);
+
+    // check if user with username already exists
+    getGun()
+      .get(`~@${form.values.username}`)
+      .once((user: any) => {
+        console.log({ user });
+        if (user) {
+          setAuthError("Username already taken");
+        } else {
+          getUser().create(
+            form.values.username,
+            form.values.password,
+            ({ err, pub }: any) => {
+              console.log({ err, pub });
+              if (err) {
+                setAuthError(err);
+              } else {
+                onCreateSuccess({ pub });
+              }
+            }
+          );
+        }
+      });
+  };
+
   return (
     <Column sx={{ marginTop: "30px" }}>
       <Title order={3}>Sign Up</Title>
-      <form onSubmit={form.onSubmit(signUpUser)}>
+      <form onSubmit={form.onSubmit(handleSignUp)}>
         <InputWrapper>
           <TextInput
             {...form.getInputProps("username")}
@@ -83,8 +100,8 @@ export default function Signup() {
         <InputWrapper>
           <TextInput
             {...form.getInputProps("displayName")}
-            label="Display Name"
-            placeholder="John Doe"
+            label="displayName"
+            placeholder="example"
             onChange={(event) => {
               form.setFieldValue("displayName", event.currentTarget.value);
               setAuthError(null);

@@ -1,11 +1,13 @@
 import { Box } from "@mantine/core";
-import { useRouter } from "next/router";
 import { FC } from "react";
+// import { useLinks } from "../../hooks";
+import { UserLink } from "../../types";
 
 interface DisplayLinkListProps {}
 
 const DisplayLinkList: FC<DisplayLinkListProps> = () => {
-  const router = useRouter();
+  // const { links } = useLinks();
+  const links: any = [];
 
   return (
     <Box
@@ -14,10 +16,11 @@ const DisplayLinkList: FC<DisplayLinkListProps> = () => {
         flexDirection: "column",
         alignItems: "center",
         padding: 10,
-        // border: "1px solid pink",
       }}
     >
-      links
+      {links.map((link: any) => (
+        <Box key={link.id}>{link.label}</Box>
+      ))}
     </Box>
   );
 };

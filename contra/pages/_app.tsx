@@ -2,10 +2,10 @@ import { MantineProvider } from "@mantine/core";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../components/common/layout";
+import { GunContextProvider } from "../hooks/useGunContext";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
-
   return (
     <>
       <Head>
@@ -15,19 +15,20 @@ export default function App(props: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "dark",
-        }}
-      >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </MantineProvider>
+      <GunContextProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: "dark",
+          }}
+        >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </MantineProvider>
+      </GunContextProvider>
     </>
   );
 }
