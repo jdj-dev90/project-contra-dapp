@@ -11,12 +11,18 @@ import React, {
 import { ProfileDetails, UserLink } from "../types";
 import { useRouter } from "next/router";
 
-const createDefaultUserProfile = (username: string) => ({
-  username,
-  avatar: "",
-  displayName: "",
-  bio: "",
-  privacyType: "PUBLIC",
+const createUserProfile = ({
+  username = "",
+  avatar = "",
+  displayName = "",
+  bio = "",
+  privacyType = "PUBLIC",
+}: Partial<ProfileDetails>) => ({
+  username: username,
+  avatar: avatar,
+  displayName: displayName,
+  bio: bio,
+  privacyType: privacyType,
 });
 
 export const useGun = () => {
@@ -34,7 +40,6 @@ export const useGun = () => {
   const _getGun = () => gunRef.current;
   const _getUser = () => userRef.current;
   const _getCertificate = () => certificateRef.current;
-
   //////////////////////////////////////////
 
   const router = useRouter();
@@ -46,12 +51,14 @@ export const useGun = () => {
       .get(_getUser().is.pub)
       .once((profile: any) => {
         if (profile) {
-          setUserProfile(profile);
+          setUserProfile(createUserProfile(profile));
         } else {
           _getUser()
             .get("alias")
             .once((username: string) => {
-              const defaultProfile = createDefaultUserProfile(username);
+              const defaultProfile = createUserProfile({
+                username,
+              });
               _getGun()
                 .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
                 .get("profiles")
@@ -113,6 +120,7 @@ export const useGun = () => {
   };
 
   useEffect(() => {
+    console.log("useEffectuseEffectuseEffect");
     (Gun as any).on("opt", (ctx: any) => {
       if (ctx.once) return;
 
@@ -132,9 +140,14 @@ export const useGun = () => {
         }
       });
     });
+    console.log("111111111111111111111111111111111111111111");
 
-    const gun = Gun(["http://localhost:8765/gun"]);
-
+    const gun = Gun({
+      file: "radataclient",
+      peers: ["http://localhost:8765/gun"],
+    });
+    console.log("222222222222222222222222222222222222222222");
+    console.log({ accessTokenRef, certificateRef });
     // create user
     const user = gun
       .user()
@@ -215,6 +228,7 @@ export const useGun = () => {
     accessTokenRef: accessTokenRef?.current,
     certificate: certificateRef.current,
     userProfile,
+    gun: _getGun(),
   });
   const _login = (username: string, password: string) => {
     //signup
@@ -273,6 +287,8 @@ export const useGun = () => {
       onAuthCbRef.current = cb;
     },
     clearSession: _clearSession,
+    authError,
+    setAuthError,
   };
 };
 

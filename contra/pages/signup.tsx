@@ -1,15 +1,11 @@
 import { Box, Button, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
 import { useGunContext } from "../hooks/useGunContext";
 
 export default function Login() {
-  const router = useRouter();
-  const { signup, getUser, setUserProfile, onAuth } = useGunContext();
-  const [authError, setAuthError] = useState<string | null>(null);
+  const { signup, authError, setAuthError } = useGunContext();
 
   const form = useForm({
     initialValues: {

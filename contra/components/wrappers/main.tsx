@@ -7,7 +7,6 @@ interface MainProps {
 
 const Main: FC<MainProps> = ({ children }) => {
   const theme = useMantineTheme();
-  console.log({ theme });
 
   return (
     <Box
