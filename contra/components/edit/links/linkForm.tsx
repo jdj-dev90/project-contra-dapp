@@ -10,7 +10,7 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
-  const { getGun, getUser, getCertificate } = useGunContext();
+  const { getGun, userProfile, getCertificate } = useGunContext();
   const form = useForm({
     initialValues: {
       label: link?.label || "",
@@ -33,7 +33,7 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
     const links = getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(getUser().is.pub)
+      .get(userProfile?.username)
       .get("links");
 
     console.log({ id, ...values });

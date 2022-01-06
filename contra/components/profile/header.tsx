@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Divider,
-  Title,
+  Title
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -26,7 +26,7 @@ const HeaderItem: FC<{ children: any }> = ({ children }) => {
         display: "flex",
         padding: "5px",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       {children}
@@ -38,17 +38,17 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   displayName,
   username,
   bio,
-  privacyType,
+  privacyType
 }) => {
   const router = useRouter();
-  const { getUser } = useGunContext();
+  const { userProfile } = useGunContext();
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 10,
+        padding: 10
       }}
     >
       <HeaderItem>
@@ -61,7 +61,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           sx={{
             display: "flex",
             marginTop: "5px",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           <HeaderItem>
@@ -74,7 +74,9 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <ActionIcon
               variant="outline"
               color="blue"
-              onClick={() => router.push(`/profile/edit/${getUser().is.pub}`)}
+              onClick={() =>
+                router.push(`/profile/edit/${userProfile?.username}`)
+              }
             >
               <BiEdit />
             </ActionIcon>
@@ -98,19 +100,23 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           display: "flex",
           width: "100%",
           justifyContent: "space-around",
-          paddingTop: 10,
+          paddingTop: 10
         }}
       >
         <Button
           variant="outline"
-          onClick={() => router.push(`/profile/followers/${getUser().is.pub}`)}
+          onClick={() =>
+            router.push(`/profile/followers/${userProfile?.username}`)
+          }
         >
           Followers
         </Button>
         <Divider orientation="vertical" />
         <Button
           variant="outline"
-          onClick={() => router.push(`/profile/following/${getUser().is.pub}`)}
+          onClick={() =>
+            router.push(`/profile/following/${userProfile?.username}`)
+          }
         >
           Following
         </Button>

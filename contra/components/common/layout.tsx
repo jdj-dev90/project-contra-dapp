@@ -1,24 +1,20 @@
-import React, { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Main } from "../wrappers";
 import NavMenu from "./navMenu";
+import { useGunContext } from "../../hooks/useGunContext";
+import { useRouter } from "next/router";
+import { RouteGuard } from "./routeGuard";
 interface PropTypes {
-  children: React.ReactChild;
+  children: ReactNode;
 }
 
 const Layout: FC<PropTypes> = ({ children }) => {
   return (
     <>
       <NavMenu />
-      {/* {!userProfile && (
-        <div>
-          <Signup />
-        </div>
-      )} */}
-      {/* {userProfile && (
-      )} */}
-      <main>
+      <RouteGuard>
         <Main>{children}</Main>
-      </main>
+      </RouteGuard>
     </>
   );
 };

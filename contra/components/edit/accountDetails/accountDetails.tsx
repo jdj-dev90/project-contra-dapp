@@ -11,26 +11,26 @@ export default function AccountDetails() {
       username: "",
       displayName: "",
       bio: "",
-      privacyType: "PUBLIC",
+      privacyType: "PUBLIC"
     },
 
     validationRules: {
-      displayName: (value) => value.length >= 5,
-      bio: (value) => value.length <= 50,
+      displayName: value => value.length >= 5,
+      bio: value => value.length <= 50
     },
     errorMessages: {
       displayName: "Must be at least 5 characters long.",
-      bio: "Must be less than 50 characters long.",
-    },
+      bio: "Must be less than 50 characters long."
+    }
   });
 
   const onSave = (values: typeof form["values"]) => {
     getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(getUser().is.pub)
+      .get(userProfile?.username)
       .put(values, null, {
-        opt: { cert: getCertificate() },
+        opt: { cert: getCertificate() }
       });
   };
 
@@ -40,11 +40,10 @@ export default function AccountDetails() {
         username: userProfile.username,
         displayName: userProfile.displayName,
         bio: userProfile.bio,
-        privacyType: userProfile.privacyType,
+        privacyType: userProfile.privacyType
       });
     }
   }, [userProfile]);
-  console.log({ userProfile });
   return (
     <>
       <Title order={2}>Account Details</Title>

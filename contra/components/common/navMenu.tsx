@@ -4,7 +4,7 @@ import {
   Button,
   Menu,
   Paper,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
@@ -31,7 +31,7 @@ const NavMenu: FC<PropTypes> = () => {
     // logged out from click, notify other tabs
     if (evt) {
       sessionChannel.postMessage({
-        eventName: "REMOVE_YOUR_CREDS",
+        eventName: "REMOVE_YOUR_CREDS"
       });
     }
   };
@@ -45,13 +45,13 @@ const NavMenu: FC<PropTypes> = () => {
       sx={{
         display: "flex",
         padding: 10,
-        justifyContent: "space-between",
+        justifyContent: "space-between"
       }}
     >
       <Box
         sx={{
           display: "flex",
-          flex: 1,
+          flex: 1
         }}
       >
         <Box
@@ -59,7 +59,7 @@ const NavMenu: FC<PropTypes> = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            margin: "0 10px",
+            margin: "0 10px"
           }}
         >
           <IconContext.Provider value={{ style: { fontSize: "28px" } }}>
@@ -83,7 +83,7 @@ const NavMenu: FC<PropTypes> = () => {
               variant="outline"
               onClick={() => {
                 setCurrentPage("Profile");
-                router.push(`/profile/${getUser().is.pub}`);
+                router.push(`/profile/${userProfile.username}`);
               }}
             >
               Profile
@@ -105,7 +105,7 @@ const NavMenu: FC<PropTypes> = () => {
       </Box>
       <Box
         sx={{
-          display: "flex",
+          display: "flex"
         }}
       >
         <Box>
@@ -114,7 +114,7 @@ const NavMenu: FC<PropTypes> = () => {
               <button
                 style={{
                   all: "unset",
-                  cursor: "pointer",
+                  cursor: "pointer"
                 }}
               >
                 <SeededAvatar seed="adsfgaljsdkf" size="md" />

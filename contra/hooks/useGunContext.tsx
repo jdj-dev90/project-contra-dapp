@@ -44,11 +44,12 @@ export const useGun = () => {
 
   const router = useRouter();
 
-  const _setUserProfile = () => {
+  const _setUserProfile = (username:string) => {
+    console.log({username})
     _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(_getUser().is.pub)
+      .get(username)
       .once((profile: any) => {
         if (profile) {
           setUserProfile(createUserProfile(profile));
@@ -62,7 +63,7 @@ export const useGun = () => {
               _getGun()
                 .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
                 .get("profiles")
-                .get(_getUser().is.pub)
+                .get(userProfile?.username)
                 .put(defaultProfile, null, {
                   opt: { cert: _getCertificate() },
                 });
@@ -72,11 +73,30 @@ export const useGun = () => {
       });
   };
 
+
+  // const _setProfiles = () => {
+  //   _getGun()
+  //     .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
+  //     .get("profiles")
+  //     .map()
+  //     .once((profile: any, id: string) => {
+  //       const newProfile = {
+  //         id,
+  //         label: profile.label,
+  //         url: profile.url,
+  //         type: profile.type,
+  //       };
+  //       console.log({newProfile})
+  //       setLinks((pr) => [...pr, newProfile]);
+  //     });
+  // };
+
+
   const _setLinks = () => {
     _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(_getUser().is.pub)
+      .get(userProfile?.username)
       .get("links")
       .map()
       .once((link: any, id: string) => {
@@ -95,7 +115,7 @@ export const useGun = () => {
     _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
-      .get(_getUser().is.pub)
+      .get(userProfile?.username)
       .get("links")
       .unset(link, null, {
         opt: { cert: _getCertificate() },
@@ -120,7 +140,6 @@ export const useGun = () => {
   };
 
   useEffect(() => {
-    console.log("useEffectuseEffectuseEffect");
     (Gun as any).on("opt", (ctx: any) => {
       if (ctx.once) return;
 
@@ -140,14 +159,12 @@ export const useGun = () => {
         }
       });
     });
-    console.log("111111111111111111111111111111111111111111");
 
     const gun = Gun({
       file: "radataclient",
       peers: ["http://localhost:8765/gun"],
     });
-    console.log("222222222222222222222222222222222222222222");
-    console.log({ accessTokenRef, certificateRef });
+
     // create user
     const user = gun
       .user()
@@ -187,7 +204,7 @@ export const useGun = () => {
 
       if (!certificateRef.current) {
         // get new certificate
-        user.get("alias").once((username) => {
+        user.get("alias").once((username:any) => {
           // console.log({
           //   certRefresh: {
           //     username,
@@ -210,7 +227,7 @@ export const useGun = () => {
               // TODO check if expiry isn't working or misconfigured
               // TODO handle expired certificates
               certificateRef.current = certificate;
-              _setUserProfile();
+              _setUserProfile(username);
             });
         });
       }
@@ -225,23 +242,20 @@ export const useGun = () => {
   }, []);
 
   console.log({
+    userProfile,
     accessTokenRef: accessTokenRef?.current,
     certificate: certificateRef.current,
-    userProfile,
-    gun: _getGun(),
   });
+
+
+
   const _login = (username: string, password: string) => {
-    //signup
     _getUser().auth(username, password, (ack: any) => {
-      console.log({ ack }, "getUser");
       if (ack.err) {
         setAuthError(ack.err);
       } else {
-        // onAuthCbRef.current = setUserProfile()
-        // onAuth(() => {
-        //   setUserProfile();
-        // });
-        router.push(`/profile/${ack.sea.pub}`);
+           const returnUrl = router.query.returnUrl as string || '/';
+           router.push(returnUrl);
       }
     });
   };
@@ -253,12 +267,10 @@ export const useGun = () => {
     _getGun()
       .get(`~@${username}`)
       .once((user: any) => {
-        console.log({ user });
         if (user) {
           setAuthError("Username already taken");
         } else {
           _getUser().create(username, password, ({ err, pub }: any) => {
-            console.log({ err, pub });
             if (err) {
               setAuthError(err);
             } else {

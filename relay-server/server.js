@@ -12,10 +12,12 @@ require("dotenv").config();
 const app = express();
 const port = 8765;
 const APP_KEY_PAIR = {
-  pub: "w1Eo--LPhJ3PEGeUXnt5myLbFSeM2Ylq5ih-z9-Q_bo._YDfMdhFOOMDGs_nxr0l21VMSPbLvqb5XjCRKAyG2Ug",
-  priv: "vz8y-nUOEwVHoMPwEf1v-lV43XpTCJsTjwMCmCPqews",
-  epub: "tS4TPpf904qOa348sVe9j2iRNzJTyTYNud4u8dDmN4I.p2bsNmJ7RKuUZ3XhgzfPUZpKG4OJh5PxlAiylY8gZ8E",
-  epriv: "Ii0xwDDkYiy9zsG-hVp4LpBOmC2XDBGLwrBGANbLtxk",
+  pub:
+    "SWdW9x4-pE_Ef5myIbOEO4IiwLfIE2XmiP6sSg65pR8.E-auE2yrkfBsTX5Cybc1ee5IqCMsE7rbVDJ2KgvArxc",
+  priv: "vCW4B_9_tUobuGvVxbd9zf4fbmFE4RPHdFxmc0d2Ovg",
+  epub:
+    "cQ3pASaZovRVwt_RZhqTiZMBYvxjQBHeZfsQjXhm6ZY.Hgir1MOLPhT-8Xs9eN3-OzW0BYyZZDdLbZ_ElnxRJy0",
+  epriv: "M-BotiNjuIQ4YZaAddqIDEtfgnF4Ljm2i8MmHqoYvN4"
 };
 const APP_TOKEN_SECRET = "SECRET_TOCHANGE_PLAZ";
 
@@ -50,7 +52,7 @@ function verifyToken(msg) {
 
 const gun = Gun({
   web: server,
-  isValid: verifyToken,
+  isValid: verifyToken
 });
 
 // Sync everything
@@ -81,7 +83,7 @@ app.post("/api/certificates", async (req, res) => {
     //     .get('profiles')
     //     .get(user.pub)
     //     .put({ name: 'alice' }, null, {opt: { cert: certificate }} )
-    { "*": "profiles", "+": "*" },
+    { "*": "profiles", "+": "*" }
   ];
 
   // expire in 2 hours
@@ -109,7 +111,7 @@ app.post("/api/certificates", async (req, res) => {
   console.log({ certificate });
   res.status(201).send({
     certificate,
-    expires_at: expiresAt,
+    expires_at: expiresAt
   });
 });
 
@@ -117,10 +119,10 @@ app.post("/api/tokens", async (req, res) => {
   const { username, pub } = req.body;
 
   const token = jwt.sign({ username, pub }, APP_TOKEN_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "1h"
   });
 
   res.status(201).send({
-    accessToken: token,
+    accessToken: token
   });
 });
