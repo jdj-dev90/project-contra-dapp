@@ -1,23 +1,3 @@
-/*
- * Provide one instance of gun to your entire app.
- * NOTE Using this component blocks render until gun is ready
- *
- * Usage examples:
- * // index.js
- *   import { GunContextProvider } from './useGunContext'
- *   // ...
- *   <GunContextProvider>
- *     <App />
- *   </GunContextProvider>
- *
- * // App.js
- *   import useGunContext from './useGunContext'
- *   // ...
- *   const { getGun, getUser } = useGunContext()
- *
- *   getGun().get('ours').put('this')
- *   getUser().get('mine').put('that')
- */
 import Gun from "gun/gun";
 import "gun/sea";
 import "./gun.unset";
@@ -46,7 +26,6 @@ export const useGun = () => {
   const onAuthCbRef = useRef<any>();
   const [userProfile, setUserProfile] = useState<ProfileDetails | null>(null);
   const [links, setLinks] = useState<UserLink[]>([]);
-  // console.log({ links }, "!!!");
 
   //////////////////////////////////////////
 

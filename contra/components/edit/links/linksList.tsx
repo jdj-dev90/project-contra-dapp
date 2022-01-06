@@ -1,6 +1,6 @@
-import { useGunContext } from "../../../hooks/useGunContext";
 import { Box } from "@mantine/core";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { useGunContext } from "../../../hooks/useGunContext";
 import { UserLink } from "../../../types";
 import EditLink from "../../common/cards/editLink";
 
@@ -9,7 +9,7 @@ interface PropTypes {
   setLink?: Dispatch<SetStateAction<UserLink | null>>;
 }
 
-const LinksList: FC<PropTypes> = ({ modalOpen, setModalOpen, setLink }) => {
+const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
   const { getGun, getUser, onAuth, links, setLinks, deleteLink } =
     useGunContext();
 
