@@ -25,9 +25,7 @@ const Layout: FC<PropTypes> = ({ children }) => {
       }}
     >
       <NavMenu />
-      {/* <main> */}
       <Main>{children}</Main>
-      {/* </main> */}
     </Box>
   );
 };

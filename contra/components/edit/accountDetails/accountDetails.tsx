@@ -1,4 +1,11 @@
-import { Button, Checkbox, TextInput, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Textarea,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useEffect } from "react";
 import { useGunContext } from "../../../hooks/useGunContext";
@@ -46,42 +53,68 @@ export default function AccountDetails() {
   }, [userProfile]);
   console.log({ userProfile });
   return (
-    <>
-      <Title order={2}>Account Details</Title>
-
-      <form onSubmit={form.onSubmit(onSave)}>
-        <SeededAvatar
-          seed={form.values.username}
-          onEdit={() => console.log("avatar edit clicked")}
-        />
-        <TextInput
-          sx={{ padding: "5px 0" }}
-          label="Display Name"
-          placeholder="John Doe"
-          {...form.getInputProps("displayName")}
-        />
-        <TextInput
-          sx={{ padding: "5px 0" }}
-          label="Bio"
-          placeholder="..."
-          {...form.getInputProps("bio")}
-        />
-        <Checkbox
-          sx={{ padding: "10px 0" }}
-          {...form.getInputProps("privacyType", { type: "checkbox" })}
-          checked={form.values.privacyType === "PRIVATE"}
-          onChange={(e: any) => {
-            form.setFieldValue(
-              "privacyType",
-              e.currentTarget.checked ? "PRIVATE" : "PUBLIC"
-            );
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          margin: 0,
+        }}
+      >
+        <Title
+          sx={{
+            marginBottom: 25,
           }}
-          label="Do you want to make your account private?"
-        />
-        <Button sx={{ margin: "5px 0" }} type="submit">
-          save
-        </Button>
-      </form>
-    </>
+          order={2}
+        >
+          Account Details
+        </Title>
+        <form onSubmit={form.onSubmit(onSave)}>
+          <Box
+            sx={{
+              marginBottom: 20,
+            }}
+          >
+            <SeededAvatar
+              seed={form.values.username}
+              // onEdit={() => console.log("avatar edit clicked")}
+            />
+          </Box>
+          <TextInput
+            sx={{ padding: "5px 0" }}
+            label="Display Name"
+            placeholder="John Doe"
+            {...form.getInputProps("displayName")}
+          />
+          <Textarea
+            sx={{ padding: "5px 0" }}
+            label="Bio"
+            placeholder="..."
+            {...form.getInputProps("bio")}
+          />
+          <Checkbox
+            sx={{ padding: "10px 0" }}
+            {...form.getInputProps("privacyType", { type: "checkbox" })}
+            checked={form.values.privacyType === "PRIVATE"}
+            onChange={(e: any) => {
+              form.setFieldValue(
+                "privacyType",
+                e.currentTarget.checked ? "PRIVATE" : "PUBLIC"
+              );
+            }}
+            label="Do you want to make your account private?"
+          />
+          <Button sx={{ margin: "10px 0 25px 0" }} type="submit">
+            save
+          </Button>
+        </form>
+      </Box>
+    </Box>
   );
 }
