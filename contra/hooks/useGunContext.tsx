@@ -1,4 +1,4 @@
-import Gun from "gun/gun";
+import Gun from "gun";
 import "gun/sea";
 import "./gun.unset";
 import React, {
@@ -26,6 +26,9 @@ const createUserProfile = ({
 });
 
 export const useGun = () => {
+  console.log('useGunuseGunuseGunuseGunuseGunuseGun')
+  console.log({NEXT_PUBLIC_APP_PUBLIC_KEY:process.env.NEXT_PUBLIC_APP_PUBLIC_KEY})
+
   const gunRef = useRef<any>();
   const userRef = useRef<any>();
   const certificateRef = useRef<any>();
@@ -45,7 +48,6 @@ export const useGun = () => {
   const router = useRouter();
 
   const _setUserProfile = (username:string) => {
-    console.log({username})
     _getGun()
       .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
       .get("profiles")
@@ -142,8 +144,10 @@ export const useGun = () => {
   useEffect(() => {
     (Gun as any).on("opt", (ctx: any) => {
       if (ctx.once) return;
-
+console.log('ctxctxctxctxctxctxctxctx',ctx.on)
       ctx.on("out", function (msg: any) {
+        console.log('lkjhaskjdakjdgakjhsgdhjagdjhakgdjha')
+        console.log({msg})
         // @ts-ignore
         const to = this.to;
         // Adds headers for put
@@ -158,13 +162,17 @@ export const useGun = () => {
           // redirect the user to a log in page
         }
       });
+
+      console.log('AFTER CTXXXXX')
+
     });
+    console.log('Gunnnnnnnnnnn',)
 
     const gun = Gun({
-      file: "radataclient",
+      // file: "radataclient",
       peers: ["http://localhost:8765/gun"],
-    });
 
+    });
     // create user
     const user = gun
       .user()
@@ -280,7 +288,6 @@ export const useGun = () => {
         }
       });
   };
-
   return {
     login: _login,
     signup: _signup,
@@ -338,7 +345,7 @@ export function GunContextProvider({
 //     //     if (msg.err === "Invalid access token") {
 //     //       // not implemented: handle invalid access token
 //     //       // you might want to do a silent refresh, or
-//     //       // redirect the user to a log in page
+//     //       // redirect the user to a log in pagsssse
 //     //     }
 //     //   });
 //     // });

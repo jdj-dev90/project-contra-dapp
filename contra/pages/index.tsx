@@ -25,6 +25,7 @@ const Home: NextPage = () => {
 
   return (
     <Box>
+      home page
       {profiles.map((profile: any) => {
         console.log({ profile }, "asakcajio");
         return (
