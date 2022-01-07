@@ -8,7 +8,7 @@ import { GunContextProvider } from "../hooks/useGunContext";
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
   return (
-    <>
+    <div style={{ width: "100vw", height: "100vh" }}>
       <Head>
         <title>Page title</title>
         <meta
@@ -32,6 +32,6 @@ export default function App(props: AppProps) {
           </IconContext.Provider>
         </MantineProvider>
       </GunContextProvider>
-    </>
+    </div>
   );
 }
