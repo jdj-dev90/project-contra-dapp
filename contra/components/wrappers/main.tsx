@@ -1,10 +1,11 @@
-import { Box } from "@mantine/core";
+import { Box, Paper, useMantineTheme } from "@mantine/core";
 import { FC } from "react";
 interface MainProps {
   children: any;
 }
 
 const Main: FC<MainProps> = ({ children }) => {
+  const theme = useMantineTheme();
   return (
     <Box
       sx={{
@@ -12,7 +13,20 @@ const Main: FC<MainProps> = ({ children }) => {
         justifyContent: "center",
       }}
     >
-      <Box sx={{ width: "80%" }}>{children}</Box>
+      <Paper
+        padding="md"
+        shadow="sm"
+        sx={{
+          width: "80%",
+
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[6]
+              : theme.colors.gray[1],
+        }}
+      >
+        {children}
+      </Paper>
     </Box>
   );
 };

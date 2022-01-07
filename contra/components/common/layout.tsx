@@ -17,8 +17,8 @@ const Layout: FC<PropTypes> = ({ children }) => {
         flexDirection: "column",
         backgroundColor:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors.gray[1],
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3],
         width: "100%",
         height: "100%",
       }}
