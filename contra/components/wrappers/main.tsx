@@ -23,7 +23,6 @@ const Main: FC<MainProps> = ({ children }) => {
           flexDirection: "column",
           width: "80%",
           height: "100%",
-
           backgroundColor:
             theme.colorScheme === "dark"
               ? theme.colors.dark[6]
