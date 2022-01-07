@@ -3,13 +3,10 @@ import {
   Anchor,
   Autocomplete,
   Box,
-  Button,
   Menu,
   Paper,
-  Text,
-  useMantineTheme,
 } from "@mantine/core";
-import Link from "next/link";
+import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { BiArrowBack, BiNetworkChart, BiSearchAlt } from "react-icons/bi";
@@ -18,20 +15,15 @@ import { useGunContext } from "../../hooks/useGunContext";
 import useSessionChannel from "../../utils/useSessionChannel";
 import SeededAvatar from "./cards/seededAvatar";
 
-type Page = "Home" | "Profile";
-
 interface PropTypes {}
 const NavMenu: FC<PropTypes> = () => {
-  const theme = useMantineTheme();
   const { getUser, userProfile, clearSession } = useGunContext();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState<Page>("Home");
   const isLoggedIn = !!userProfile;
   const sessionChannel = useSessionChannel();
 
   const logout = (evt?: React.ChangeEvent<any>) => {
     clearSession();
-
     // logged out from click, notify other tabs
     if (evt) {
       sessionChannel.postMessage({
@@ -39,9 +31,8 @@ const NavMenu: FC<PropTypes> = () => {
       });
     }
   };
-  console.log("router", { router });
-
   const [value, setValue] = useState("");
+  const mobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <>
@@ -74,12 +65,11 @@ const NavMenu: FC<PropTypes> = () => {
               <BiNetworkChart />
             </IconContext.Provider>
           </Box>
-          {isLoggedIn && (
+          {isLoggedIn && !mobile && (
             <Box>
               <Anchor
                 sx={{ margin: "0 10px 0 20px" }}
                 onClick={() => {
-                  setCurrentPage("Home");
                   router.push("/");
                 }}
               >
@@ -88,7 +78,6 @@ const NavMenu: FC<PropTypes> = () => {
               <Anchor
                 sx={{ margin: "0 30px 0 0" }}
                 onClick={() => {
-                  setCurrentPage("Profile");
                   router.push(`/profile/${getUser().is.pub}`);
                 }}
               >
@@ -142,6 +131,24 @@ const NavMenu: FC<PropTypes> = () => {
               <Menu.Item onClick={() => router.push(`/test`)}>
                 Test page
               </Menu.Item>
+              {isLoggedIn && mobile && (
+                <Menu.Item
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
+                  Home
+                </Menu.Item>
+              )}
+              {isLoggedIn && mobile && (
+                <Menu.Item
+                  onClick={() => {
+                    router.push(`/profile/${getUser().is.pub}`);
+                  }}
+                >
+                  Profile
+                </Menu.Item>
+              )}
               {isLoggedIn && (
                 <Menu.Item
                   color="red"
