@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Anchor,
   Blockquote,
   Box,
   Button,
@@ -80,41 +81,44 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             </ActionIcon>
           </HeaderItem>
         </Box>
+        <Divider />
+
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+            paddingTop: 10,
+          }}
+        >
+          <Anchor
+            onClick={() =>
+              router.push(`/profile/followers/${getUser().is.pub}`)
+            }
+          >
+            Followers
+          </Anchor>
+          <Divider
+            sx={{
+              height: "auto",
+              margin: "0 5px",
+            }}
+            orientation="vertical"
+          />
+          <Anchor
+            onClick={() =>
+              router.push(`/profile/following/${getUser().is.pub}`)
+            }
+          >
+            Following
+          </Anchor>
+        </Box>
       </HeaderItem>
-      {bio ? (
+      {bio && (
         <HeaderItem>
           <Blockquote cite={username}>{bio}</Blockquote>
         </HeaderItem>
-      ) : (
-        <HeaderItem>
-          <Blockquote cite={username}>
-            {displayName} testtest test testtest test testtesttest te st test
-          </Blockquote>
-        </HeaderItem>
       )}
-
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "space-around",
-          paddingTop: 10,
-        }}
-      >
-        <Button
-          variant="outline"
-          onClick={() => router.push(`/profile/followers/${getUser().is.pub}`)}
-        >
-          Followers
-        </Button>
-        <Divider orientation="vertical" />
-        <Button
-          variant="outline"
-          onClick={() => router.push(`/profile/following/${getUser().is.pub}`)}
-        >
-          Following
-        </Button>
-      </Box>
     </Box>
   );
 };

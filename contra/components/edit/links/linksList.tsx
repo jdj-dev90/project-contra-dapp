@@ -22,8 +22,8 @@ const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
   console.log({ links });
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Box sx={{ width: "60%" }}>
-        {links.map((l: any, ix: number) => {
+      {!!links.length ? (
+        links.map((l: any, ix: number) => {
           return setModalOpen && setLink ? (
             <EditLink
               key={`${l.id}-${ix}`}
@@ -38,22 +38,10 @@ const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
           ) : (
             <EditLink key={`${l.id}-${ix}`} link={l} />
           );
-        })}
-        {/* <EditLink
-          // key={`${l.id}-${ix}`}
-          link={{
-            id: "testetsttest testtest",
-            type: "testetsttest testtest",
-            label: "testetsttest testtest",
-            url: "https://react-icons.github.io/react-icons",
-          }}
-          onDelete={(lId: string) => deleteLink(lId)}
-          onEdit={(l: UserLink) => {
-            setLink(l);
-            setModalOpen(true);
-          }}
-        /> */}
-      </Box>
+        })
+      ) : (
+        <Box>No Links!</Box>
+      )}
     </Box>
   );
 };
