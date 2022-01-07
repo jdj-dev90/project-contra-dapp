@@ -37,6 +37,7 @@ const NavMenu: FC<PropTypes> = () => {
   return (
     <>
       <Paper
+        radius="xs"
         padding="md"
         shadow="sm"
         sx={{
@@ -44,6 +45,8 @@ const NavMenu: FC<PropTypes> = () => {
           padding: 10,
           alignItems: "center",
           justifyContent: "space-between",
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
         }}
       >
         <Box

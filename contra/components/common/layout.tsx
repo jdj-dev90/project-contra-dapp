@@ -20,13 +20,14 @@ const Layout: FC<PropTypes> = ({ children }) => {
             ? theme.colors.dark[4]
             : theme.colors.gray[3],
         width: "100%",
+        minHeight: "100vh",
         height: "100%",
       }}
     >
       <NavMenu />
-      <main>
-        <Main>{children}</Main>
-      </main>
+      {/* <main> */}
+      <Main>{children}</Main>
+      {/* </main> */}
     </Box>
   );
 };

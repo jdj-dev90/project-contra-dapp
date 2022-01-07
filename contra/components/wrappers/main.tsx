@@ -11,13 +11,18 @@ const Main: FC<MainProps> = ({ children }) => {
       sx={{
         display: "flex",
         justifyContent: "center",
+        minHeight: "80%",
+        paddingBottom: "80px",
       }}
     >
       <Paper
         padding="md"
         shadow="sm"
         sx={{
+          display: "flex",
+          flexDirection: "column",
           width: "80%",
+          height: "100%",
 
           backgroundColor:
             theme.colorScheme === "dark"
