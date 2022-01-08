@@ -1,32 +1,28 @@
 import {
+  ActionIcon,
+  Anchor,
   Autocomplete,
   Box,
-  Button,
   Menu,
   Paper,
-  useMantineTheme,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import useSessionChannel from "../../utils/useSessionChannel";
-import { BiNetworkChart, BiSearchAlt } from "react-icons/bi";
+import { BiArrowBack, BiNetworkChart, BiSearchAlt } from "react-icons/bi";
 import { IconContext } from "react-icons/lib";
-import SeededAvatar from "./cards/seededAvatar";
 import { useGunContext } from "../../hooks/useGunContext";
-
-type Page = "Home" | "Profile";
+import useSessionChannel from "../../utils/useSessionChannel";
+import SeededAvatar from "./cards/seededAvatar";
 
 interface PropTypes {}
 const NavMenu: FC<PropTypes> = () => {
-  const theme = useMantineTheme();
   const { getAlias, getUser, clearSession } = useGunContext();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState<Page>("Home");
   const isLoggedIn = !!getUser()?.is;
   const sessionChannel = useSessionChannel();
   const logout = (evt?: React.ChangeEvent<any>) => {
     clearSession();
-
     // logged out from click, notify other tabs
     if (evt) {
       sessionChannel.postMessage({
@@ -34,126 +30,181 @@ const NavMenu: FC<PropTypes> = () => {
       });
     }
   };
-
   const [value, setValue] = useState("");
+  const mobile = useMediaQuery("(max-width: 600px)");
 
   return (
-    <Paper
-      padding="md"
-      shadow="sm"
-      sx={{
-        display: "flex",
-        padding: 10,
-        justifyContent: "space-between",
-      }}
-    >
-      <Box
+    <>
+      <Paper
+        radius="xs"
+        padding="md"
+        shadow="sm"
         sx={{
           display: "flex",
-          flex: 1,
+          padding: 10,
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
         }}
       >
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            margin: "0 10px",
+            flex: 1,
           }}
         >
-          <IconContext.Provider value={{ style: { fontSize: "28px" } }}>
-            <BiNetworkChart />
-          </IconContext.Provider>
-        </Box>
-        {
-          <Box>
-            <Button
-              sx={{ margin: "0 10px 0 20px" }}
-              variant="outline"
-              onClick={() => {
-                setCurrentPage("Home");
-                router.push("/");
-              }}
-            >
-              Home
-            </Button>
-            <Button
-              sx={{ margin: "0 30px 0 0" }}
-              variant="outline"
-              onClick={() => {
-                setCurrentPage("Profile");
-                router.push(`/profile/${getAlias()}`);
-              }}
-            >
-              Profile
-            </Button>
-          </Box>
-        }
-        <Box>
-          <Autocomplete
-            value={value}
-            onChange={setValue}
-            placeholder="Pick one"
-            data={["React", "Angular", "Svelte", "Vue"]}
-            icon={<BiSearchAlt />}
-            transition="pop-top-left"
-            transitionDuration={80}
-            transitionTimingFunction="ease"
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-        }}
-      >
-        <Box>
-          <Menu
-            control={
-              <button
-                style={{
-                  all: "unset",
-                  cursor: "pointer",
-                }}
-              >
-                <SeededAvatar seed="adsfgaljsdkf" size="md" />
-              </button>
-            }
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 10px",
+            }}
           >
-            <Menu.Item onClick={() => router.push(`/test`)}>
-              Test page
-            </Menu.Item>
-            {isLoggedIn && (
-              <Menu.Item
-                color="red"
+            <IconContext.Provider value={{ style: { fontSize: "28px" } }}>
+              <BiNetworkChart />
+            </IconContext.Provider>
+          </Box>
+          {isLoggedIn && !mobile && (
+            <Box>
+              <Anchor
+                sx={{ margin: "0 10px 0 20px" }}
                 onClick={() => {
-                  logout();
-                  router.push("/signin");
+                  router.push("/");
                 }}
               >
-                Logout
-              </Menu.Item>
-            )}
-            {!isLoggedIn && (
-              <Menu.Item
-                disabled={isLoggedIn}
-                onClick={() => router.push(`/signin`)}
+                Home
+              </Anchor>
+              <Anchor
+                sx={{ margin: "0 30px 0 0" }}
+                onClick={() => {
+                  router.push(`/profile/${getUser().is.pub}`);
+                }}
               >
-                Sign In
-              </Menu.Item>
-            )}
-            {!isLoggedIn && (
-              <Menu.Item
-                disabled={isLoggedIn}
-                onClick={() => router.push(`/signup`)}
-              >
-                Sign Up
-              </Menu.Item>
-            )}
-          </Menu>
+                Profile
+              </Anchor>
+            </Box>
+          )}
+          <Box>
+            <Autocomplete
+              value={value}
+              onChange={setValue}
+              placeholder="Pick one"
+              data={["React", "Angular", "Svelte", "Vue"]}
+              icon={<BiSearchAlt />}
+              transition="pop-top-left"
+              transitionDuration={80}
+              transitionTimingFunction="ease"
+            />
+          </Box>
         </Box>
-      </Box>
-    </Paper>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Menu
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              control={
+                <button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    all: "unset",
+                    cursor: "pointer",
+                  }}
+                >
+                  <SeededAvatar seed="adsfgaljsdkf" size="md" />
+                </button>
+              }
+            >
+              <Menu.Item onClick={() => router.push(`/test`)}>
+                Test page
+              </Menu.Item>
+              {isLoggedIn && mobile && (
+                <Menu.Item
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
+                  Home
+                </Menu.Item>
+              )}
+              {isLoggedIn && mobile && (
+                <Menu.Item
+                  onClick={() => {
+                    router.push(`/profile/${getUser().is.pub}`);
+                  }}
+                >
+                  Profile
+                </Menu.Item>
+              )}
+              {isLoggedIn && (
+                <Menu.Item
+                  color="red"
+                  onClick={() => {
+                    logout();
+                    router.push("/");
+                  }}
+                >
+                  Logout
+                </Menu.Item>
+              )}
+              {!isLoggedIn && (
+                <Menu.Item
+                  disabled={isLoggedIn}
+                  onClick={() => router.push(`/signin`)}
+                >
+                  Sign In
+                </Menu.Item>
+              )}
+              {!isLoggedIn && (
+                <Menu.Item
+                  disabled={isLoggedIn}
+                  onClick={() => router.push(`/signup`)}
+                >
+                  Sign Up
+                </Menu.Item>
+              )}
+            </Menu>
+          </Box>
+        </Box>
+      </Paper>
+      {router.pathname !== "/" && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            margin: "10px 0 5px 15px",
+            cursor: "pointer",
+          }}
+        >
+          <ActionIcon
+            color="blue"
+            size="xl"
+            radius="xl"
+            variant="hover"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <BiArrowBack />
+          </ActionIcon>
+        </Box>
+      )}
+    </>
   );
 };
 

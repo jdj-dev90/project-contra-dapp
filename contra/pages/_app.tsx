@@ -20,10 +20,12 @@ export default function App(props: AppProps) {
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: "dark",
-          }}
+          theme={
+            {
+              /** Put your mantine theme override here */
+              // colorScheme: "dark",
+            }
+          }
         >
           <IconContext.Provider value={{ style: { fontSize: "18px" } }}>
             <Layout>

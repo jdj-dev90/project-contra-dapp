@@ -9,8 +9,23 @@ interface PropTypes {
 }
 
 const Layout: FC<PropTypes> = ({ children }) => {
+  const theme = useMantineTheme();
+  console.log({ theme });
+
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3],
+        width: "100%",
+        minHeight: "100vh",
+        height: "100%",
+      }}
+    >
       <NavMenu />
       <RouteGuard>
         <Main>{children}</Main>

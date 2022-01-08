@@ -13,7 +13,7 @@ const Spacer: FC<{ children: any }> = ({ children }) => {
 const Test: NextPage = () => {
   return (
     <Box>
-      <Paper>
+      <Box>
         <Spacer>
           <Text weight={500} size="sm">
             avatar
@@ -23,7 +23,7 @@ const Test: NextPage = () => {
             onEdit={() => console.log("clicked")}
           />
         </Spacer>
-      </Paper>
+      </Box>
       <Spacer>
         <Text weight={500} size="sm">
           add someone (outbound)
