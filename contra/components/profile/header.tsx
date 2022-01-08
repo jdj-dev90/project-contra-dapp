@@ -75,7 +75,15 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <ActionIcon
               variant="outline"
               color="blue"
-              onClick={() => router.push(`/profile/edit/${getUser().is.pub}`)}
+              onClick={() => {
+                getUser()
+                  .get("alias")
+                  .once((alias: string) => {
+                    if (alias === router.query.userId) {
+                      router.push(`/profile/edit/${router.query.userId}`);
+                    }
+                  });
+              }}
             >
               <BiEdit />
             </ActionIcon>
@@ -119,6 +127,33 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           <Blockquote cite={username}>{bio}</Blockquote>
         </HeaderItem>
       )}
+
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-around",
+          paddingTop: 10,
+        }}
+      >
+        <Button
+          variant="outline"
+          onClick={() =>
+            router.push(`/profile/followers/${router.query.userId}`)
+          }
+        >
+          Followers
+        </Button>
+        <Divider orientation="vertical" />
+        <Button
+          variant="outline"
+          onClick={() =>
+            router.push(`/profile/following/${router.query.userId}`)
+          }
+        >
+          Following
+        </Button>
+      </Box>
     </Box>
   );
 };

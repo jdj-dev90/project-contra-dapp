@@ -4,6 +4,8 @@ import SeededAvatar from "./seededAvatar";
 
 interface PropTypes {
   type: "outbound" | "inbound";
+  profile?: any;
+  onCardClick?: (profile: any) => void;
 }
 
 interface FollowState {
@@ -45,7 +47,7 @@ const handleFollowClick = (
   const setChanges = (changes: ChangeState) =>
     setFollowState({
       ...followState,
-      ...changes,
+      ...changes
     });
   const { following, status, isPrivate } = followState;
 
@@ -56,19 +58,19 @@ const handleFollowClick = (
       case "APPROVED": {
         setChanges({
           following: !following,
-          status: !following ? "PENDING" : null,
+          status: !following ? "PENDING" : null
         });
       }
       case "PENDING": {
         if (type === "APPROVE") {
           setChanges({
             following: true,
-            status: "APPROVED",
+            status: "APPROVED"
           });
         } else {
           setChanges({
             following: false,
-            status: "REJECTED",
+            status: "REJECTED"
           });
         }
         return;
@@ -76,18 +78,18 @@ const handleFollowClick = (
       default: {
         setChanges({
           following: !following,
-          status: !following ? "PENDING" : null,
+          status: !following ? "PENDING" : null
         });
       }
     }
   }
 };
 
-const UserCard: FC<PropTypes> = ({ type }) => {
+const UserCard: FC<PropTypes> = ({ type, profile, onCardClick = () => {} }) => {
   const [followState, setFollowState] = useState<FollowState>({
     following: true,
     status: "PENDING",
-    isPrivate: true,
+    isPrivate: true
   });
 
   return (
@@ -98,7 +100,7 @@ const UserCard: FC<PropTypes> = ({ type }) => {
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
       }}
     >
       <Box
@@ -106,26 +108,26 @@ const UserCard: FC<PropTypes> = ({ type }) => {
           display: "flex",
           alignItems: "center",
           cursor: "pointer",
-          width: "100%",
+          width: "100%"
         }}
-        onClick={() => console.log("nav to acc")}
+        onClick={onCardClick}
       >
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginRight: "20px",
+            marginRight: "20px"
           }}
         >
           <SeededAvatar size="md" seed="asdfiuhkjnbasjdnfrrr" />
         </Box>
         <Box>
           <Text weight={500} size="lg">
-            Display Name
+            {profile.displayName}
           </Text>
           <Text weight={500} size="sm">
-            $username
+            {profile.username}
           </Text>
         </Box>
       </Box>

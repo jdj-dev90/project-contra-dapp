@@ -1,10 +1,5 @@
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  MantineNumberSize,
-  useMantineTheme,
-} from "@mantine/core";
+import { ActionIcon, Avatar, Box, useMantineTheme } from "@mantine/core";
+import { MantineNumberSize } from "@mantine/styles";
 import { useHover } from "@mantine/hooks";
 import { FC } from "react";
 import { BiEdit } from "react-icons/bi";
@@ -23,20 +18,20 @@ const SeededAvatar: FC<PropTypes> = ({ seed, radius, size, onEdit }) => {
   const { hovered, ref } = useHover();
   const { colors, primaryColor } = useMantineTheme();
   const props = useSpring({
-    opacity: hovered ? 1 : 0.2,
+    opacity: hovered ? 1 : 0.2
   });
 
   const seededSvg = createAvatar(style, {
     seed: seed || "",
     dataUri: true,
-    backgroundColor: colors[primaryColor][5],
+    backgroundColor: colors[primaryColor][5]
   });
   return (
     <Box
       ref={ref}
       sx={{
         display: "flex",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Avatar color="blue" radius={radius || "xl"} size={size || "xl"}>
@@ -47,7 +42,7 @@ const SeededAvatar: FC<PropTypes> = ({ seed, radius, size, onEdit }) => {
           <animated.div style={props}>
             <ActionIcon
               sx={{
-                margin: "0 10px",
+                margin: "0 10px"
               }}
               variant="outline"
               color="blue"

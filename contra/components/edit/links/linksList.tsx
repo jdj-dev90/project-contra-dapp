@@ -1,5 +1,5 @@
 import { Box } from "@mantine/core";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useGunContext } from "../../../hooks/useGunContext";
 import { UserLink } from "../../../types";
 import EditLink from "../../common/cards/editLink";
@@ -10,16 +10,30 @@ interface PropTypes {
 }
 
 const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
-  const { getGun, getUser, onAuth, links, setLinks, deleteLink } =
-    useGunContext();
-
+  const { deleteLink, getGun, getAlias } = useGunContext();
+  const [links, setLinks] = useState<any>([]);
   useEffect(() => {
-    console.log("SETTING LINKS");
-    onAuth(() => {
-      setLinks();
-    });
+    let evt: any = null;
+    getGun()
+      .get(`${getAlias()}/profile`)
+      .get("links")
+      .map()
+      .on((link: any, id: string, chain: any, e: any) => {
+        evt = e;
+        if (link) {
+          const newLink = {
+            id,
+            label: link.label,
+            url: link.url,
+            type: link.type,
+          };
+          setLinks((li: any) => [...li, newLink]);
+        }
+      });
+
+    return () => evt && evt?.off();
   }, []);
-  console.log({ links });
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       {!!links.length ? (
@@ -30,7 +44,6 @@ const LinksList: FC<PropTypes> = ({ setModalOpen, setLink }) => {
               link={l}
               onDelete={(lId: string) => deleteLink(lId)}
               onEdit={(l: UserLink) => {
-                console.log({ l });
                 // setLink(l);
                 // setModalOpen(true);
               }}

@@ -3,6 +3,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 let Gun = require("gun");
 const SEA = require("gun/sea");
+// const AXE = require("gun/axe");
 
 // implements forked version of bullet catcher with
 // additional error handling
@@ -12,10 +13,10 @@ require("dotenv").config();
 const app = express();
 const port = 8765;
 const APP_KEY_PAIR = {
-  pub: "w1Eo--LPhJ3PEGeUXnt5myLbFSeM2Ylq5ih-z9-Q_bo._YDfMdhFOOMDGs_nxr0l21VMSPbLvqb5XjCRKAyG2Ug",
-  priv: "vz8y-nUOEwVHoMPwEf1v-lV43XpTCJsTjwMCmCPqews",
-  epub: "tS4TPpf904qOa348sVe9j2iRNzJTyTYNud4u8dDmN4I.p2bsNmJ7RKuUZ3XhgzfPUZpKG4OJh5PxlAiylY8gZ8E",
-  epriv: "Ii0xwDDkYiy9zsG-hVp4LpBOmC2XDBGLwrBGANbLtxk",
+  pub: "vwBGXfs1ld5bMgKK5bG-ymM5LWSZpq2W9tx6T6mrxyM.gINLNurjzrcZSkElYQsAf3vN4VZsPc5NDrRhs4bp7lY",
+  priv: "YKGPutAv6CdSr5JKz9OEM8X7NbT-QuKRgmPdLTP6rtI",
+  epub: "DweRBBAMpB4GKSJwWyRgKtBHSZ_7sREr5-5XIocBCCU.qg8K0uANmxzQjofyjoAaSvemo0mL_iQjDTGqlShlV9o",
+  epriv: "NC_WnezGlYgkLdD6tEcnuhJUMZBTvtkKxOV-Espg040",
 };
 const APP_TOKEN_SECRET = "SECRET_TOCHANGE_PLAZ";
 
@@ -27,7 +28,7 @@ const server = app.listen(port, () => {
 
 // verify JWT from gun message
 function verifyToken(msg) {
-  console.log({ msg, accessToken: msg?.headers?.accessToken });
+  // console.log({ msg, accessToken: msg?.headers?.accessToken });
   if (msg?.headers?.accessToken) {
     try {
       jwt.verify(msg.headers.accessToken, APP_TOKEN_SECRET);
@@ -72,7 +73,7 @@ app.use(cors());
 
 app.post("/api/certificates", async (req, res) => {
   const { username, pub: userPubKey } = req.body;
-  console.log({ body: req.body });
+  console.log({ username, pub: userPubKey });
   // See https://gun.eco/docs/SEA.certify for policies
   const policy = [
     // allow users to add and edit their profiles with:
@@ -81,7 +82,12 @@ app.post("/api/certificates", async (req, res) => {
     //     .get('profiles')
     //     .get(user.pub)
     //     .put({ name: 'alice' }, null, {opt: { cert: certificate }} )
-    { "*": "profiles", "+": "*" },
+    // { "*": `~${APP_KEY_PAIR.pub}` },
+    // { "*": `~${APP_KEY_PAIR.pub}*` },
+    // `~${APP_KEY_PAIR.pub}/profiles`,
+    // { "#": { "*": "" } },
+    // { "#": "*" },
+    // { "*": "profiles" },
   ];
 
   // expire in 2 hours

@@ -1,15 +1,15 @@
 import { Box, Button, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import Column from "../components/wrappers/column";
 import InputWrapper from "../components/wrappers/inputWrapper";
 import { useGunContext } from "../hooks/useGunContext";
+import { useRouter } from "next/router";
+import { ChangeEvent, useEffect } from "react";
+import { ProfileDetails } from "../types";
 
-export default function Login() {
+export default function Signup() {
   const router = useRouter();
-  const { signup, getUser, setUserProfile, onAuth } = useGunContext();
-  const [authError, setAuthError] = useState<string | null>(null);
+  const { signup, authError, setAuthError, getUser } = useGunContext();
 
   const form = useForm({
     initialValues: {
@@ -31,8 +31,18 @@ export default function Login() {
   });
 
   const handleSignUp = () => {
-    signup(form.values.username, form.values.password);
+    signup(form.values.username, form.values.password, form.values.displayName);
   };
+
+  useEffect(() => {
+    // redirect to home if already logged in
+    if (
+      (getUser()?.is && router.pathname === "/signup") ||
+      router.pathname === "/signin"
+    ) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <Column sx={{ marginTop: "30px" }}>
@@ -43,7 +53,7 @@ export default function Login() {
             {...form.getInputProps("username")}
             label="Username"
             placeholder="example"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               form.setFieldValue("username", event.currentTarget.value);
               setAuthError(null);
             }}
@@ -52,9 +62,9 @@ export default function Login() {
         <InputWrapper>
           <TextInput
             {...form.getInputProps("displayName")}
-            label="displayName"
+            label="Display Name"
             placeholder="example"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               form.setFieldValue("displayName", event.currentTarget.value);
               setAuthError(null);
             }}
@@ -66,7 +76,7 @@ export default function Login() {
             type="password"
             label="Password"
             placeholder="********"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               form.setFieldValue("password", event.currentTarget.value);
               setAuthError(null);
             }}

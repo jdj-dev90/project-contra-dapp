@@ -17,11 +17,10 @@ import SeededAvatar from "./cards/seededAvatar";
 
 interface PropTypes {}
 const NavMenu: FC<PropTypes> = () => {
-  const { getUser, userProfile, clearSession } = useGunContext();
+  const { getAlias, getUser, clearSession } = useGunContext();
   const router = useRouter();
-  const isLoggedIn = !!userProfile;
+  const isLoggedIn = !!getUser()?.is;
   const sessionChannel = useSessionChannel();
-
   const logout = (evt?: React.ChangeEvent<any>) => {
     clearSession();
     // logged out from click, notify other tabs
@@ -30,6 +29,7 @@ const NavMenu: FC<PropTypes> = () => {
         eventName: "REMOVE_YOUR_CREDS",
       });
     }
+    router.push("/signin");
   };
   const [value, setValue] = useState("");
   const mobile = useMediaQuery("(max-width: 600px)");
@@ -81,7 +81,7 @@ const NavMenu: FC<PropTypes> = () => {
               <Anchor
                 sx={{ margin: "0 30px 0 0" }}
                 onClick={() => {
-                  router.push(`/profile/${getUser().is.pub}`);
+                  router.push(`/profile/${getAlias()}`);
                 }}
               >
                 Profile
@@ -157,7 +157,6 @@ const NavMenu: FC<PropTypes> = () => {
                   color="red"
                   onClick={() => {
                     logout();
-                    router.push("/");
                   }}
                 >
                   Logout

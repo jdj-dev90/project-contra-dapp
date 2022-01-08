@@ -1,14 +1,14 @@
 import { Box, useMantineTheme } from "@mantine/core";
-import React, { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Main } from "../wrappers";
 import NavMenu from "./navMenu";
+import { RouteGuard } from "./routeGuard";
 interface PropTypes {
-  children: React.ReactChild;
+  children: ReactNode;
 }
 
 const Layout: FC<PropTypes> = ({ children }) => {
   const theme = useMantineTheme();
-  console.log({ theme });
 
   return (
     <Box
@@ -25,7 +25,9 @@ const Layout: FC<PropTypes> = ({ children }) => {
       }}
     >
       <NavMenu />
-      <Main>{children}</Main>
+      <RouteGuard>
+        <Main>{children}</Main>
+      </RouteGuard>
     </Box>
   );
 };

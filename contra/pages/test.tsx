@@ -1,5 +1,5 @@
 import { Box, Paper, Text } from "@mantine/core";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { FC } from "react";
 import EditLink from "../components/common/cards/editLink";
 import SeededAvatar from "../components/common/cards/seededAvatar";
@@ -45,7 +45,7 @@ const Test: NextPage = () => {
             id: "testetsttest testtest",
             type: "testetsttest testtest",
             label: "testetsttest testtest",
-            url: "https://react-icons.github.io/react-icons",
+            url: "https://react-icons.github.io/react-icons"
           }}
           onDelete={(lId: string) => console.log({ lId })}
           onEdit={(l: UserLink) => console.log({ l })}

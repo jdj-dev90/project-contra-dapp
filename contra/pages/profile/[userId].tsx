@@ -1,10 +1,22 @@
 import { Box, Divider } from "@mantine/core";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import LinksList from "../../components/edit/links/linksList";
 import ProfileHeader from "../../components/profile/header";
 import { useGunContext } from "../../hooks/useGunContext";
 
 export default function Profile() {
-  const { userProfile } = useGunContext();
+  const { getGun } = useGunContext();
+  const router = useRouter();
+  const [profile, setProfile] = useState<any>([]);
+
+  useEffect(() => {
+    getGun()
+      .get(`${router.query.userId}/profile`)
+      .once((prof: any) => {
+        setProfile(prof);
+      });
+  }, []);
 
   return (
     <Box
@@ -15,10 +27,10 @@ export default function Profile() {
       }}
     >
       <ProfileHeader
-        displayName={userProfile?.displayName || ""}
-        username={userProfile?.username || ""}
-        bio={userProfile?.bio || ""}
-        privacyType={userProfile?.privacyType || ""}
+        displayName={profile?.displayName || ""}
+        username={profile?.username || ""}
+        bio={profile?.bio || ""}
+        privacyType={profile?.privacyType || ""}
       />
       <Divider
         sx={{
