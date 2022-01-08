@@ -36,13 +36,13 @@ const RouteGuard: FC<PropTypes> = ({ children }) => {
 
   function authCheck(url: string) {
     // redirect to login page if accessing a private page and not logged in
-    const publicPaths = ["/signin", "signup"];
+    const publicPaths = ["/signin", "/signup"];
     const path = url.split("?")[0];
     if (!getUser() && !publicPaths.includes(path)) {
       setAuthorized(false);
       router.push({
         pathname: "/signin",
-        query: { returnUrl: router.asPath }
+        query: { returnUrl: router.asPath },
       });
     } else {
       setAuthorized(true);

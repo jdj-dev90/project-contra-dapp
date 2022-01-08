@@ -5,37 +5,41 @@ import InputWrapper from "../components/wrappers/inputWrapper";
 import { useGunContext } from "../hooks/useGunContext";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
+import { ProfileDetails } from "../types";
 
-export default function Login() {
+export default function Signup() {
   const router = useRouter();
-  const { signup, authError, setAuthError, userProfile } = useGunContext();
+  const { signup, authError, setAuthError, getUser } = useGunContext();
 
   const form = useForm({
     initialValues: {
       username: "",
       displayName: "",
-      password: ""
+      password: "",
     },
 
     validationRules: {
-      username: value => value.length >= 4,
-      displayName: value => value.length >= 4,
-      password: value => value.length >= 8
+      username: (value) => value.length >= 4,
+      displayName: (value) => value.length >= 4,
+      password: (value) => value.length >= 8,
     },
     errorMessages: {
       username: "Must be at least 4 characters long.",
       displayName: "Must be at least 4 characters long.",
-      password: "Must be at least 8 characters long."
-    }
+      password: "Must be at least 8 characters long.",
+    },
   });
 
   const handleSignUp = () => {
-    signup(form.values.username, form.values.password);
+    signup(form.values.username, form.values.password, form.values.displayName);
   };
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (userProfile) {
+    if (
+      (getUser()?.is && router.pathname === "/signup") ||
+      router.pathname === "/signin"
+    ) {
       router.push("/");
     }
   }, []);

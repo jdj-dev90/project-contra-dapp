@@ -4,7 +4,7 @@ import {
   Button,
   Menu,
   Paper,
-  useMantineTheme
+  useMantineTheme,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
@@ -19,19 +19,18 @@ type Page = "Home" | "Profile";
 interface PropTypes {}
 const NavMenu: FC<PropTypes> = () => {
   const theme = useMantineTheme();
-  const { getUser, userProfile, clearSession } = useGunContext();
+  const { getAlias, getUser, clearSession } = useGunContext();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<Page>("Home");
-  const isLoggedIn = !!userProfile;
+  const isLoggedIn = !!getUser()?.is;
   const sessionChannel = useSessionChannel();
-
   const logout = (evt?: React.ChangeEvent<any>) => {
     clearSession();
 
     // logged out from click, notify other tabs
     if (evt) {
       sessionChannel.postMessage({
-        eventName: "REMOVE_YOUR_CREDS"
+        eventName: "REMOVE_YOUR_CREDS",
       });
     }
   };
@@ -45,13 +44,13 @@ const NavMenu: FC<PropTypes> = () => {
       sx={{
         display: "flex",
         padding: 10,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
     >
       <Box
         sx={{
           display: "flex",
-          flex: 1
+          flex: 1,
         }}
       >
         <Box
@@ -59,14 +58,14 @@ const NavMenu: FC<PropTypes> = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            margin: "0 10px"
+            margin: "0 10px",
           }}
         >
           <IconContext.Provider value={{ style: { fontSize: "28px" } }}>
             <BiNetworkChart />
           </IconContext.Provider>
         </Box>
-        {isLoggedIn && (
+        {
           <Box>
             <Button
               sx={{ margin: "0 10px 0 20px" }}
@@ -83,13 +82,13 @@ const NavMenu: FC<PropTypes> = () => {
               variant="outline"
               onClick={() => {
                 setCurrentPage("Profile");
-                router.push(`/profile/${userProfile.username}`);
+                router.push(`/profile/${getAlias()}`);
               }}
             >
               Profile
             </Button>
           </Box>
-        )}
+        }
         <Box>
           <Autocomplete
             value={value}
@@ -105,7 +104,7 @@ const NavMenu: FC<PropTypes> = () => {
       </Box>
       <Box
         sx={{
-          display: "flex"
+          display: "flex",
         }}
       >
         <Box>
@@ -114,7 +113,7 @@ const NavMenu: FC<PropTypes> = () => {
               <button
                 style={{
                   all: "unset",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
               >
                 <SeededAvatar seed="adsfgaljsdkf" size="md" />
@@ -129,7 +128,7 @@ const NavMenu: FC<PropTypes> = () => {
                 color="red"
                 onClick={() => {
                   logout();
-                  router.push("/");
+                  router.push("/signin");
                 }}
               >
                 Logout

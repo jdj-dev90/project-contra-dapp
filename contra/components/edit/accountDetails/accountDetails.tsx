@@ -1,49 +1,60 @@
 import { Button, Checkbox, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGunContext } from "../../../hooks/useGunContext";
 import SeededAvatar from "../../common/cards/seededAvatar";
 
 export default function AccountDetails() {
-  const { getUser, getGun, getCertificate, userProfile } = useGunContext();
+  const router = useRouter();
+  const { getCertificate, getGun } = useGunContext();
   const form = useForm({
     initialValues: {
       username: "",
       displayName: "",
       bio: "",
-      privacyType: "PUBLIC"
+      privacyType: "PUBLIC",
     },
 
     validationRules: {
-      displayName: value => value.length >= 5,
-      bio: value => value.length <= 50
+      displayName: (value) => value.length >= 5,
+      bio: (value) => value.length <= 50,
     },
     errorMessages: {
       displayName: "Must be at least 5 characters long.",
-      bio: "Must be less than 50 characters long."
-    }
+      bio: "Must be less than 50 characters long.",
+    },
   });
 
   const onSave = (values: typeof form["values"]) => {
     getGun()
-      .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
-      .get("profiles")
-      .get(userProfile?.username)
-      .put(values, null, {
-        opt: { cert: getCertificate() }
-      });
+      .get(`${router.query.userId}/profile`)
+      .put(
+        {
+          displayName: values.displayName,
+          bio: values.bio,
+          privacyType: values.privacyType,
+        },
+        null,
+        {
+          opt: { cert: getCertificate() },
+        }
+      );
   };
 
   useEffect(() => {
-    if (userProfile) {
-      form.setValues({
-        username: userProfile.username,
-        displayName: userProfile.displayName,
-        bio: userProfile.bio,
-        privacyType: userProfile.privacyType
+    getGun()
+      .get(`${router.query.userId}/profile`)
+      .once((data: any) => {
+        form.setValues({
+          username: data.username,
+          displayName: data.displayName,
+          bio: data.bio,
+          privacyType: data.privacyType,
+        });
       });
-    }
-  }, [userProfile]);
+  }, []);
+
   return (
     <>
       <Title order={2}>Account Details</Title>

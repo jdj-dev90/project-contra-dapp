@@ -1,29 +1,10 @@
 import { Box } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
 import AccountDetails from "../../../components/edit/accountDetails/accountDetails";
 import Links from "../../../components/edit/links/links";
-import { useGunContext } from "../../../hooks/useGunContext";
 export default function Edit() {
-  const { getUser, userProfile } = useGunContext();
+  // const { getUser,  } = useGunContext();
 
-  const form = useForm({
-    initialValues: {
-      displayName: userProfile?.displayName || "",
-      bio: userProfile?.bio || "",
-      privacyType: userProfile?.privacyType || "PUBLIC",
-    },
-
-    validationRules: {
-      displayName: (value) => value.length >= 5,
-      bio: (value) => value.length <= 50,
-    },
-    errorMessages: {
-      displayName: "Must be at least 5 characters long.",
-      bio: "Must be less than 50 characters long.",
-    },
-  });
-
-  const onSave = (values: typeof form["values"]) => getUser().put(values);
+  // const onSave = (values: typeof form["values"]) => getUser().put(values);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

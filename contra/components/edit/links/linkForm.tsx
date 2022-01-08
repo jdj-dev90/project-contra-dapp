@@ -10,7 +10,7 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
-  const { getGun, userProfile, getCertificate } = useGunContext();
+  const { getGun, getUser, getCertificate, getAlias } = useGunContext();
   const form = useForm({
     initialValues: {
       label: link?.label || "",
@@ -30,13 +30,8 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
   });
 
   const onSave = ({ id, ...values }: typeof form["values"]) => {
-    const links = getGun()
-      .get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`)
-      .get("profiles")
-      .get(userProfile?.username)
-      .get("links");
+    const links = getGun().get(`${getAlias()}/profile`).get("links");
 
-    console.log({ id, ...values });
     if (id) {
       // UPDATE
       links.set(links.get(id), null, {
@@ -49,7 +44,6 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
         opt: { cert: getCertificate() },
       });
     }
-    console.log({ links });
 
     setModalOpen(false);
   };

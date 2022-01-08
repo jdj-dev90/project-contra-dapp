@@ -3,6 +3,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 let Gun = require("gun");
 const SEA = require("gun/sea");
+// const AXE = require("gun/axe");
 
 // implements forked version of bullet catcher with
 // additional error handling
@@ -12,12 +13,10 @@ require("dotenv").config();
 const app = express();
 const port = 8765;
 const APP_KEY_PAIR = {
-  pub:
-    "SWdW9x4-pE_Ef5myIbOEO4IiwLfIE2XmiP6sSg65pR8.E-auE2yrkfBsTX5Cybc1ee5IqCMsE7rbVDJ2KgvArxc",
-  priv: "vCW4B_9_tUobuGvVxbd9zf4fbmFE4RPHdFxmc0d2Ovg",
-  epub:
-    "cQ3pASaZovRVwt_RZhqTiZMBYvxjQBHeZfsQjXhm6ZY.Hgir1MOLPhT-8Xs9eN3-OzW0BYyZZDdLbZ_ElnxRJy0",
-  epriv: "M-BotiNjuIQ4YZaAddqIDEtfgnF4Ljm2i8MmHqoYvN4"
+  pub: "vwBGXfs1ld5bMgKK5bG-ymM5LWSZpq2W9tx6T6mrxyM.gINLNurjzrcZSkElYQsAf3vN4VZsPc5NDrRhs4bp7lY",
+  priv: "YKGPutAv6CdSr5JKz9OEM8X7NbT-QuKRgmPdLTP6rtI",
+  epub: "DweRBBAMpB4GKSJwWyRgKtBHSZ_7sREr5-5XIocBCCU.qg8K0uANmxzQjofyjoAaSvemo0mL_iQjDTGqlShlV9o",
+  epriv: "NC_WnezGlYgkLdD6tEcnuhJUMZBTvtkKxOV-Espg040",
 };
 const APP_TOKEN_SECRET = "SECRET_TOCHANGE_PLAZ";
 
@@ -29,7 +28,7 @@ const server = app.listen(port, () => {
 
 // verify JWT from gun message
 function verifyToken(msg) {
-  console.log({ msg, accessToken: msg?.headers?.accessToken });
+  // console.log({ msg, accessToken: msg?.headers?.accessToken });
   if (msg?.headers?.accessToken) {
     try {
       jwt.verify(msg.headers.accessToken, APP_TOKEN_SECRET);
@@ -52,7 +51,7 @@ function verifyToken(msg) {
 
 const gun = Gun({
   web: server,
-  isValid: verifyToken
+  isValid: verifyToken,
 });
 
 // Sync everything
@@ -74,7 +73,7 @@ app.use(cors());
 
 app.post("/api/certificates", async (req, res) => {
   const { username, pub: userPubKey } = req.body;
-  console.log({ body: req.body });
+  console.log({ username, pub: userPubKey });
   // See https://gun.eco/docs/SEA.certify for policies
   const policy = [
     // allow users to add and edit their profiles with:
@@ -83,7 +82,12 @@ app.post("/api/certificates", async (req, res) => {
     //     .get('profiles')
     //     .get(user.pub)
     //     .put({ name: 'alice' }, null, {opt: { cert: certificate }} )
-    { "*": "profiles", "+": "*" }
+    // { "*": `~${APP_KEY_PAIR.pub}` },
+    // { "*": `~${APP_KEY_PAIR.pub}*` },
+    // `~${APP_KEY_PAIR.pub}/profiles`,
+    // { "#": { "*": "" } },
+    // { "#": "*" },
+    // { "*": "profiles" },
   ];
 
   // expire in 2 hours
@@ -111,7 +115,7 @@ app.post("/api/certificates", async (req, res) => {
   console.log({ certificate });
   res.status(201).send({
     certificate,
-    expires_at: expiresAt
+    expires_at: expiresAt,
   });
 });
 
@@ -119,10 +123,10 @@ app.post("/api/tokens", async (req, res) => {
   const { username, pub } = req.body;
 
   const token = jwt.sign({ username, pub }, APP_TOKEN_SECRET, {
-    expiresIn: "1h"
+    expiresIn: "1h",
   });
 
   res.status(201).send({
-    accessToken: token
+    accessToken: token,
   });
 });

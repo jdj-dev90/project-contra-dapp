@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Divider,
-  Title
+  Title,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -26,7 +26,7 @@ const HeaderItem: FC<{ children: any }> = ({ children }) => {
         display: "flex",
         padding: "5px",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
       {children}
@@ -38,17 +38,17 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   displayName,
   username,
   bio,
-  privacyType
+  privacyType,
 }) => {
   const router = useRouter();
-  const { userProfile } = useGunContext();
+  const { getUser } = useGunContext();
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 10
+        padding: 10,
       }}
     >
       <HeaderItem>
@@ -61,7 +61,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           sx={{
             display: "flex",
             marginTop: "5px",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <HeaderItem>
@@ -74,9 +74,15 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <ActionIcon
               variant="outline"
               color="blue"
-              onClick={() =>
-                router.push(`/profile/edit/${userProfile?.username}`)
-              }
+              onClick={() => {
+                getUser()
+                  .get("alias")
+                  .once((alias: string) => {
+                    if (alias === router.query.userId) {
+                      router.push(`/profile/edit/${router.query.userId}`);
+                    }
+                  });
+              }}
             >
               <BiEdit />
             </ActionIcon>
@@ -100,13 +106,13 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           display: "flex",
           width: "100%",
           justifyContent: "space-around",
-          paddingTop: 10
+          paddingTop: 10,
         }}
       >
         <Button
           variant="outline"
           onClick={() =>
-            router.push(`/profile/followers/${userProfile?.username}`)
+            router.push(`/profile/followers/${router.query.userId}`)
           }
         >
           Followers
@@ -115,7 +121,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
         <Button
           variant="outline"
           onClick={() =>
-            router.push(`/profile/following/${userProfile?.username}`)
+            router.push(`/profile/following/${router.query.userId}`)
           }
         >
           Following

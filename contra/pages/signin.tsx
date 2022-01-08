@@ -8,23 +8,22 @@ import { useRouter } from "next/router";
 
 export default function Login() {
   const router = useRouter();
-  const { login, authError, setAuthError, userProfile } = useGunContext();
-  console.log({ login });
+  const { login, authError, setAuthError, getUser } = useGunContext();
 
   const form = useForm({
     initialValues: {
       username: "",
-      password: ""
+      password: "",
     },
 
     validationRules: {
-      username: value => value.length >= 4,
-      password: value => value.length >= 8
+      username: (value) => value.length >= 4,
+      password: (value) => value.length >= 8,
     },
     errorMessages: {
       username: "Must be at least 4 characters long.",
-      password: "Must be at least 8 characters long."
-    }
+      password: "Must be at least 8 characters long.",
+    },
   });
 
   const handleSubmit = () => {
@@ -34,7 +33,7 @@ export default function Login() {
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (userProfile) {
+    if (getUser()?.is) {
       router.push("/");
     }
   }, []);
