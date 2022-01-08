@@ -29,6 +29,7 @@ const NavMenu: FC<PropTypes> = () => {
         eventName: "REMOVE_YOUR_CREDS",
       });
     }
+    router.push("/signin");
   };
   const [value, setValue] = useState("");
   const mobile = useMediaQuery("(max-width: 600px)");
@@ -80,7 +81,7 @@ const NavMenu: FC<PropTypes> = () => {
               <Anchor
                 sx={{ margin: "0 30px 0 0" }}
                 onClick={() => {
-                  router.push(`/profile/${getUser().is.pub}`);
+                  router.push(`/profile/${getAlias()}`);
                 }}
               >
                 Profile
@@ -156,7 +157,6 @@ const NavMenu: FC<PropTypes> = () => {
                   color="red"
                   onClick={() => {
                     logout();
-                    router.push("/");
                   }}
                 >
                   Logout

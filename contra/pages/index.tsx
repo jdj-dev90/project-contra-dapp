@@ -24,7 +24,6 @@ const Home: NextPage = () => {
   }, []);
   return (
     <Box>
-      home page
       {profiles.map((profile: any, idx: number) => {
         return (
           <UserCard
