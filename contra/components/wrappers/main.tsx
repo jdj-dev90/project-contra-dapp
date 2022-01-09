@@ -1,7 +1,7 @@
 import { Box, Paper, useMantineTheme } from "@mantine/core";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 interface MainProps {
-  children: any;
+  children: ReactNode;
 }
 
 const Main: FC<MainProps> = ({ children }) => {

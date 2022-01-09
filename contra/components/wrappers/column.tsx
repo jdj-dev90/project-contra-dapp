@@ -1,10 +1,11 @@
 import { Box } from "@mantine/core";
-import { FC } from "react";
+import { BoxSx } from "@mantine/core/lib/components/Box/use-sx/use-sx";
+import { FC, ReactNode } from "react";
 
 interface ColumnProps {
-  children: any;
+  children: ReactNode;
   fullWidth?: boolean;
-  sx?: any;
+  sx?: BoxSx;
 }
 
 const Column: FC<ColumnProps> = ({ children, fullWidth, sx }) => {

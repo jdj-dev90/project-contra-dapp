@@ -1,36 +1,55 @@
 import { Box } from "@mantine/core";
+import { IGunChainReference } from "gun/types/chain";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import AppLoader from "../components/common/appLoader";
 import UserCard from "../components/common/cards/userCard";
 import { useGunContext } from "../hooks/useGunContext";
+import { useProfiles } from "../hooks/useProfiles";
+import { ProfileDetails } from "../types";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const [profiles, setProfiles] = useState<any>([]);
   const { getGun } = useGunContext();
-  // console.log({ profiles, getGun: getGun().get(`~${process.env.NEXT_PUBLIC_APP_PUBLIC_KEY}`) }, "profilesprofilesprofiles");
+  const { profiles, addProfile } = useProfiles();
+
   useEffect(() => {
-    let evt: any = null;
+    let evt: IGunChainReference | null = null;
     getGun()
       .get("profiles")
       .map()
-      .on((profff: any, id, node, e) => {
-        evt = e;
-        setProfiles((p) => [...p, profff]);
-      });
+      .on(
+        (
+          profff: ProfileDetails,
+          id: string,
+          node: IGunChainReference,
+          e: IGunChainReference
+        ) => {
+          evt = e;
+          addProfile(profff);
+        }
+      );
 
-    return () => evt?.off();
+    return () => {
+      evt?.off();
+    };
   }, []);
+
+  if (profiles === null) {
+    return <AppLoader />;
+  }
   return (
     <Box>
-      {profiles.map((profile: any, idx: number) => {
+      {profiles.map((profile: ProfileDetails, idx: number) => {
         return (
           <UserCard
             key={idx}
             type={"outbound"}
             profile={profile}
-            onCardClick={() => router.push(`/profile/${profile.username}`)}
+            onCardClick={() => {
+              router.push(`/profile/${profile.username}`);
+            }}
           />
         );
       })}

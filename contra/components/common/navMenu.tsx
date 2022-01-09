@@ -12,7 +12,7 @@ import { FC, useState } from "react";
 import { BiArrowBack, BiNetworkChart, BiSearchAlt } from "react-icons/bi";
 import { IconContext } from "react-icons/lib";
 import { useGunContext } from "../../hooks/useGunContext";
-import useSessionChannel from "../../utils/useSessionChannel";
+import useSessionChannel from "../../hooks/useSessionChannel";
 import SeededAvatar from "./cards/seededAvatar";
 
 interface PropTypes {}
@@ -21,7 +21,7 @@ const NavMenu: FC<PropTypes> = () => {
   const router = useRouter();
   const isLoggedIn = !!getUser()?.is;
   const sessionChannel = useSessionChannel();
-  const logout = (evt?: React.ChangeEvent<any>) => {
+  const logout = (evt?: React.ChangeEvent<HTMLElement>) => {
     clearSession();
     // logged out from click, notify other tabs
     if (evt) {
