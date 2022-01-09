@@ -8,8 +8,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ProfileDetails, UserLink } from "../types";
+import { ProfileDetails } from "../types";
 import { useRouter } from "next/router";
+import { IGunChainReference } from "gun/types/chain";
 
 const createUserProfile = ({
   username = "",
@@ -33,15 +34,14 @@ export const useGun = () => {
   const accessTokenRef = useRef<any>();
   const onAuthCbRef = useRef<any>();
 
-  const [links, setLinks] = useState<UserLink[]>([]);
   const [authError, setAuthError] = useState<string | null>(null);
 
   //////////////////////////////////////////
 
-  const _getCertificate = () => certificateRef.current;
-  const _getGun = () => gunRef.current;
-  const _getUser = () => meRef.current;
-  const _getAlias = () => aliasRef.current;
+  const _getCertificate = () => certificateRef.current!;
+  const _getGun = () => gunRef.current!;
+  const _getUser = () => meRef.current!;
+  const _getAlias = () => aliasRef.current!;
   const router = useRouter();
 
   const _login = (username: string, password: string, displayName?: string) => {
@@ -111,34 +111,6 @@ export const useGun = () => {
         aliasRef.current = username;
 
         cb && cb();
-      });
-  };
-
-  const _setLinks = () => {
-    _getGun()
-      .get(`${_getAlias()}/profile`)
-      .get("links")
-      .map()
-      .once((link: any, id: string) => {
-        if (link) {
-          const newLink = {
-            id,
-            label: link.label,
-            url: link.url,
-            type: link.type,
-          };
-          setLinks((li) => [...li, newLink]);
-        }
-      });
-  };
-
-  const _deleteLink = (id: string) => {
-    const link = _getGun().get(id);
-    _getGun()
-      .get(`${_getAlias()}/profile`)
-      .get("links")
-      .unset(link, null, {
-        opt: { cert: _getCertificate() },
       });
   };
 
@@ -230,9 +202,6 @@ export const useGun = () => {
   return {
     login: _login,
     signup: _signup,
-    setLinks: _setLinks,
-    deleteLink: _deleteLink,
-    links,
     getGun: _getGun,
     getUser: _getUser,
     getAlias: _getAlias,

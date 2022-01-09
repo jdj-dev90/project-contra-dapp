@@ -1,7 +1,8 @@
-import { Button, Select, TextInput } from "@mantine/core";
+import { Box, Button, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Dispatch, FC, SetStateAction } from "react";
 import { useGunContext } from "../../../hooks/useGunContext";
+import { useProfiles } from "../../../hooks/useProfiles";
 import { UserLink } from "../../../types";
 
 interface PropTypes {
@@ -10,7 +11,8 @@ interface PropTypes {
 }
 
 const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
-  const { getGun, getUser, getCertificate, getAlias } = useGunContext();
+  const { getGun, getCertificate, getAlias } = useGunContext();
+  const { addUserLink } = useProfiles();
   const form = useForm({
     initialValues: {
       label: link?.label || "",
@@ -29,30 +31,30 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
     },
   });
 
-  const onSave = ({ id, ...values }: typeof form["values"]) => {
+  const onSave = (data: typeof form["values"]) => {
+    const { id, ...values } = data;
     const links = getGun().get(`${getAlias()}/profile`).get("links");
-
-    if (id) {
-      // UPDATE
-      links.set(links.get(id), null, {
+    links
+      .set(!!id ? links.get(id) : values, null, {
         opt: { cert: getCertificate() },
+      })
+      .once((data: { [x: string]: any } | undefined, key: string) => {
+        addUserLink({ id: key, ...values } as UserLink);
       });
-    } else {
-      // CREATE
-
-      links.set(values, null, {
-        opt: { cert: getCertificate() },
-      });
-    }
 
     setModalOpen(false);
   };
 
   return (
     <form onSubmit={form.onSubmit(onSave)}>
-      <TextInput {...form.getInputProps("label")} placeholder="Label" />
-      <TextInput {...form.getInputProps("url")} placeholder="Url" />
+      <Box>
+        <TextInput {...form.getInputProps("label")} placeholder="Label" />
+      </Box>
+      <Box sx={{ margin: "1rem 0" }}>
+        <TextInput {...form.getInputProps("url")} placeholder="Url" />
+      </Box>
 
+      {/* 
       <Select
         {...form.getInputProps("type")}
         label="Your favorite framework/library"
@@ -63,7 +65,7 @@ const LinkForm: FC<PropTypes> = ({ link, setModalOpen }) => {
           { value: "svelte", label: "Svelte" },
           { value: "vue", label: "Vue" },
         ]}
-      />
+      /> */}
 
       <Button type="submit">save</Button>
     </form>

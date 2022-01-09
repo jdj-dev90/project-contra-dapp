@@ -1,13 +1,11 @@
 import { Box } from "@mantine/core";
 import { FC } from "react";
-// import { useLinks } from "../../hooks";
 import { UserLink } from "../../types";
 
 interface DisplayLinkListProps {}
 
 const DisplayLinkList: FC<DisplayLinkListProps> = () => {
-  // const { links } = useLinks();
-  const links: any = [];
+  const links: UserLink[] = [];
 
   return (
     <Box
@@ -18,7 +16,7 @@ const DisplayLinkList: FC<DisplayLinkListProps> = () => {
         padding: 10,
       }}
     >
-      {links.map((link: any) => (
+      {links.map((link: UserLink) => (
         <Box key={link.id}>{link.label}</Box>
       ))}
     </Box>

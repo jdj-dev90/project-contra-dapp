@@ -8,19 +8,23 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useGunContext } from "../../../hooks/useGunContext";
+import { useProfiles } from "../../../hooks/useProfiles";
+import { ProfileDetails } from "../../../types";
+import AppLoader from "../../common/appLoader";
 import SeededAvatar from "../../common/cards/seededAvatar";
 
 export default function AccountDetails() {
   const router = useRouter();
+  const { userProfile } = useProfiles();
   const { getCertificate, getGun } = useGunContext();
   const form = useForm({
     initialValues: {
-      username: "",
-      displayName: "",
-      bio: "",
-      privacyType: "PUBLIC",
+      username: userProfile?.username || "",
+      displayName: userProfile?.displayName || "",
+      bio: userProfile?.bio || "",
+      privacyType: userProfile?.privacyType || "PUBLIC",
     },
 
     validationRules: {
@@ -48,19 +52,24 @@ export default function AccountDetails() {
         }
       );
   };
-
   useEffect(() => {
-    getGun()
-      .get(`${router.query.userId}/profile`)
-      .once((data: any) => {
-        form.setValues({
-          username: data.username,
-          displayName: data.displayName,
-          bio: data.bio,
-          privacyType: data.privacyType,
+    if (userProfile?.username !== router.query.userId) {
+      getGun()
+        .get(`${router.query.userId}/profile`)
+        .once((data) => {
+          form.setValues({
+            username: data?.username | "",
+            displayName: data?.displayName | "",
+            bio: data?.bio | "",
+            privacyType: data?.privacyType | "",
+          });
         });
-      });
+    }
   }, []);
+
+  if (userProfile?.username !== router.query.userId) {
+    return <AppLoader />;
+  }
 
   return (
     <Box
@@ -112,7 +121,7 @@ export default function AccountDetails() {
             sx={{ padding: "10px 0" }}
             {...form.getInputProps("privacyType", { type: "checkbox" })}
             checked={form.values.privacyType === "PRIVATE"}
-            onChange={(e: any) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               form.setFieldValue(
                 "privacyType",
                 e.currentTarget.checked ? "PRIVATE" : "PUBLIC"

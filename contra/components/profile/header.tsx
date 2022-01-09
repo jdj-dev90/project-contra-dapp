@@ -8,7 +8,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { BiEdit, BiLockAlt, BiLockOpen } from "react-icons/bi";
 import { useGunContext } from "../../hooks/useGunContext";
 import SeededAvatar from "../common/cards/seededAvatar";
@@ -20,7 +20,7 @@ interface ProfileHeaderProps {
   privacyType: string;
 }
 
-const HeaderItem: FC<{ children: any }> = ({ children }) => {
+const HeaderItem: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Box
       sx={{

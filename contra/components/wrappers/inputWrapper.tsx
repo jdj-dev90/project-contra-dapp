@@ -1,8 +1,8 @@
 import { Box } from "@mantine/core";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 interface InputWrapperProps {
-  children: any;
+  children: ReactNode;
   fullWidth?: boolean;
 }
 
